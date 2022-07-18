@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blog.mapper.UserMapper">
+    
+    <select id="userNameExist" resultType="Integer">
+        select count(*) from sys_user
+        where user_name = #{userName}
+        and status = 0
+        and del_flag = 0
+    </select>
+
+    <select id="nickNameExist" resultType="Integer">
+        select count(*) from sys_user
+        where nick_name = #{nickName}
+        and status = 0
+        and del_flag = 0
+    </select>
+
+</mapper>
