@@ -26,19 +26,30 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
+    /***
+     * 获取文章评论列表
+     * @param articleId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @GetMapping("/commentList")
     @ApiOperation(value = "文章评论列表", notes = "获取该文章的所有评论")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "articleId", value = "文章ID"),
             @ApiImplicitParam(name = "pageNum", value = "页数"),
             @ApiImplicitParam(name = "pageSize", value = "页面尺寸")
-    }
-    )
+    })
     public Result<?> commentList(Long articleId, Integer pageNum, Integer pageSize){
         PageVo pageVo = commentService.commentList(SystemConstants.ARTICLE_COMMENT, articleId, pageNum, pageSize);
         return Result.ok(pageVo);
     }
 
+    /***
+     * 添加评论
+     * @param comment
+     * @return
+     */
     @PostMapping
     public Result<?> addComment(@RequestBody Comment comment){
 //        校验评论内容不为空
@@ -49,6 +60,12 @@ public class CommentController {
         return Result.ok(aBoolean);
     }
 
+    /***
+     * 获取友链评论列表
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @GetMapping("/linkCommentList")
     public Result<?> linkCommentList(Integer pageNum, Integer pageSize){
         PageVo pageVo = commentService.commentList(SystemConstants.LINK_COMMENT, null, pageNum, pageSize);

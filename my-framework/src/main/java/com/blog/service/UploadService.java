@@ -6,4 +6,5 @@ public interface UploadService {
 
     String uploadImg(MultipartFile file);
 
+//    void uploadFile(MultipartFile file);
 }

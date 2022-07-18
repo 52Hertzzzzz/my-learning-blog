@@ -11,8 +11,10 @@ import com.qiniu.util.Auth;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @SpringBootTest
 //@ConfigurationProperties(prefix = "oss")
@@ -66,6 +68,40 @@ public class OSSTest {
             //ignore
         }
 
+    }
+
+    @Test
+    public void test1(){
+        String originalFilename = "5.考勤报工-普通员工使用手册v1.0.docx";
+        String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String filePath = "C:\\Users\\42563\\Desktop\\新员工入职学习并掌握的制度汇总2022.6.22\\新员工入职学习并掌握的制度汇总\\5.考勤报工-普通员工使用手册v1.0.docx";
+
+        try {
+            String dirName = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+            String fileSaveName = LocalTime.now().format(DateTimeFormatter.ofPattern("HHmmss"));
+            if (!new File("D:\\" + dirName).exists()){
+                new File("D:\\" + dirName).mkdir();
+            }
+            OutputStream outputStream = new FileOutputStream(
+                    "D:\\" + dirName
+                            +"\\" + fileSaveName
+                            + suffix);
+            FileInputStream fileInputStream = new FileInputStream(new File(filePath));
+            int available = fileInputStream.available();
+            byte[] bytes = new byte[available];
+            if (fileInputStream.read(bytes) != -1){
+                outputStream.write(bytes);
+            }
+
+            outputStream.flush();
+            outputStream.close();
+            fileInputStream.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setAccessKey(String accessKey) {

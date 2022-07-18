@@ -37,6 +37,11 @@ public class UserController {
         return Result.ok(aBoolean);
     }
 
+    /***
+     * 注册新用户
+     * @param user
+     * @return
+     */
     @PostMapping("/register")
     public Result<?> register(@RequestBody User user){
         Boolean register = userService.register(user);

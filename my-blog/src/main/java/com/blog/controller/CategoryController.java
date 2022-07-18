@@ -20,6 +20,10 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    /***
+     * 获取种类列表
+     * @return
+     */
     @GetMapping("/getCategoryList")
     public Result<?> getCategoryList(){
         List<CategoryVo> categoryList = categoryService.getCategoryList();

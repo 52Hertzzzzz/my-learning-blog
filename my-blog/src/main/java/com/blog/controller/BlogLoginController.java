@@ -21,6 +21,11 @@ public class BlogLoginController {
     @Autowired
     private BlogLoginService blogLoginService;
 
+    /***
+     * 登录接口
+     * @param user
+     * @return
+     */
     //自定义登录接口
     @PostMapping("/login")
     public Result<?> login(@RequestBody User user){
@@ -32,7 +37,10 @@ public class BlogLoginController {
         return Result.ok(login);
     }
 
-
+    /***
+     * 退出登录
+     * @return
+     */
     @PostMapping("/logout")
     public Result<?> logout(){
         Result<?> logout = blogLoginService.logout();

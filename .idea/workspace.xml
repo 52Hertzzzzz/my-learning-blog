@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9708a099-58c7-4755-a6a3-6b258615aa95" name="Default Changelist" comment="" />
+    <list default="true" id="9708a099-58c7-4755-a6a3-6b258615aa95" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/controller/UploadController.java" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/controller/UploadController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/src/test/java/com/blog/OSSTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/src/test/java/com/blog/OSSTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/target/test-classes/com/blog/OSSTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/test-classes/com/blog/OSSTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-framework/src/main/java/com/blog/service/UploadService.java" beforeDir="false" afterPath="$PROJECT_DIR$/my-framework/src/main/java/com/blog/service/UploadService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-framework/src/main/java/com/blog/service/impl/UploadServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/my-framework/src/main/java/com/blog/service/impl/UploadServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-framework/target/classes/com/blog/config/MybatisPlusConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-framework/target/classes/com/blog/config/MybatisPlusConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-framework/target/classes/com/blog/service/impl/UploadServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-framework/target/classes/com/blog/service/impl/UploadServiceImpl.class" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,6 +93,7 @@
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
     <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/my-framework/src/main/java/com/blog/service" />
@@ -124,7 +135,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.MyApplication">
+  <component name="RunManager" selected="JUnit.OSSTest.test1">
     <configuration name="OSSTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="my-blog" />
       <extension name="coverage">
@@ -156,6 +167,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="OSSTest.test1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="my-blog" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.blog.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.blog" />
+      <option name="MAIN_CLASS_NAME" value="com.blog.OSSTest" />
+      <option name="METHOD_NAME" value="test1" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="MyApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="my-blog" />
       <extension name="coverage">
@@ -171,8 +198,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.MyApplication" />
+        <item itemvalue="JUnit.OSSTest.test1" />
         <item itemvalue="JUnit.OSSTest" />
+        <item itemvalue="Spring Boot.MyApplication" />
         <item itemvalue="JUnit.OSSTest.test" />
       </list>
     </recent_temporary>
@@ -208,11 +236,22 @@
       <workItem from="1657936342354" duration="3010000" />
       <workItem from="1657955659902" duration="16642000" />
       <workItem from="1658022828696" duration="18284000" />
-      <workItem from="1658122300260" duration="2505000" />
+      <workItem from="1658122300260" duration="8123000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

@@ -14,10 +14,20 @@ public class UploadController {
     @Resource
     private UploadService uploadService;
 
+    /***
+     * 图片上传
+     * @param file
+     * @return
+     */
     @PostMapping("/uploadImg")
     public Result<?> uploadImg(MultipartFile file){
         String url = uploadService.uploadImg(file);
         return Result.ok(url);
     }
+
+//    @PostMapping("/uploadFile")
+//    public Result<?> uploadFile(MultipartFile file){
+//        uploadService.uploadFile(file);
+//    }
 
 }
