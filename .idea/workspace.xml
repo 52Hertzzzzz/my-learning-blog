@@ -60,6 +60,9 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -73,6 +76,7 @@
     </option>
   </component>
   <component name="ProjectId" id="2BmyzUKSW9U1QDwkNY6z8OyJhHF" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="cassandra&#10;mysql" />
     <property name="RequestMappingsPanelOrder0" value="0" />
@@ -204,7 +208,7 @@
       <workItem from="1657936342354" duration="3010000" />
       <workItem from="1657955659902" duration="16642000" />
       <workItem from="1658022828696" duration="18284000" />
-      <workItem from="1658122300260" duration="1990000" />
+      <workItem from="1658122300260" duration="2505000" />
     </task>
     <servers />
   </component>

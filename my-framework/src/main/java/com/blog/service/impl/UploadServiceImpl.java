@@ -29,7 +29,7 @@ public class UploadServiceImpl implements UploadService {
     private String secretKey;
 
     private String bucket;
-    
+
     @Override
     public String uploadImg(MultipartFile file) {
         //判断文件类型与文件大小
