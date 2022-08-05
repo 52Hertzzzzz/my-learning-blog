@@ -2,15 +2,51 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9708a099-58c7-4755-a6a3-6b258615aa95" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my-admin/src/main/java/com/blog/AdminApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my-admin/src/main/java/com/blog/config/SecurityConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my-admin/src/main/java/com/blog/controller/TagController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my-admin/src/main/java/com/blog/entity/Tag.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my-admin/src/main/java/com/blog/filter/JwtAuthenticationTokenFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my-admin/src/main/java/com/blog/mapper/TagMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my-admin/src/main/java/com/blog/service/TagService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my-admin/src/main/java/com/blog/service/impl/TagServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my-admin/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/1e13f7e6-1616-444d-9e05-1b30afe69735.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/1e13f7e6-1616-444d-9e05-1b30afe69735.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/easyCodeTableSetting.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/easyCodeTableSetting.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/controller/UploadController.java" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/controller/UploadController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/src/test/java/com/blog/OSSTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/src/test/java/com/blog/OSSTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-admin/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/my-admin/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-admin/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/my-admin/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-admin/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/my-admin/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-admin/target/my-admin-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/my-admin/target/my-admin-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/MyApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/MyApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/job/UpdateViewCountJob.java" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/job/UpdateViewCountJob.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/mapper/xml/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/mapper/xml/UserMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/service/impl/BlogLoginServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/service/impl/BlogLoginServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/service/impl/UserDetailsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/service/impl/UserDetailsServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/classes/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/target/classes/com/blog/MyApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/classes/com/blog/MyApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/target/classes/com/blog/controller/BlogLoginController.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/classes/com/blog/controller/BlogLoginController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/target/classes/com/blog/controller/CategoryController.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/classes/com/blog/controller/CategoryController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/target/classes/com/blog/controller/CommentController.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/classes/com/blog/controller/CommentController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/target/classes/com/blog/controller/UploadController.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/classes/com/blog/controller/UploadController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/target/classes/com/blog/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/classes/com/blog/controller/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/target/classes/com/blog/job/UpdateViewCountJob.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/classes/com/blog/job/UpdateViewCountJob.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/target/classes/com/blog/mapper/xml/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/classes/com/blog/mapper/xml/UserMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/target/classes/com/blog/service/impl/UserDetailsServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/classes/com/blog/service/impl/UserDetailsServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/target/my-blog-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/my-blog-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/target/surefire-reports/TEST-com.blog.OSSTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/surefire-reports/TEST-com.blog.OSSTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-blog/target/surefire-reports/com.blog.OSSTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/surefire-reports/com.blog.OSSTest.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/my-blog/target/test-classes/com/blog/OSSTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/test-classes/com/blog/OSSTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-framework/src/main/java/com/blog/service/UploadService.java" beforeDir="false" afterPath="$PROJECT_DIR$/my-framework/src/main/java/com/blog/service/UploadService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-framework/src/main/java/com/blog/service/impl/UploadServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/my-framework/src/main/java/com/blog/service/impl/UploadServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-framework/target/classes/com/blog/config/MybatisPlusConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-framework/target/classes/com/blog/config/MybatisPlusConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-framework/target/classes/com/blog/service/impl/UploadServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-framework/target/classes/com/blog/service/impl/UploadServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-framework/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/my-framework/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-framework/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/my-framework/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-framework/target/my-framework-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/my-framework/target/my-framework-1.0-SNAPSHOT.jar" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -53,7 +89,7 @@
         <item name="mytest@localhost" type="feb32156:DbDataSourceImpl" />
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
         <item name="mytest: schema" type="76f4a085:MysqlImplModel$Schema" />
-        <item name="sys_user: table" type="285a2a93:MysqlImplModel$Table" />
+        <item name="sg_tag: table" type="285a2a93:MysqlImplModel$Table" />
       </path>
     </expand>
     <select />
@@ -73,9 +109,17 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="C:\Users\42563\Desktop\Shelter\.idea" />
+      </set>
+    </option>
+  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
+        <option name="mavenHome" value="D:/Develop/Maven/apache-maven-3.5.2" />
         <option name="userSettingsFile" value="D:\Develop\Maven\apache-maven-3.5.2\conf\settings.xml" />
       </MavenGeneralSettings>
     </option>
@@ -86,7 +130,9 @@
     </option>
   </component>
   <component name="ProjectId" id="2BmyzUKSW9U1QDwkNY6z8OyJhHF" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="cassandra&#10;mysql" />
     <property name="RequestMappingsPanelOrder0" value="0" />
@@ -97,13 +143,17 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/my-framework/src/main/java/com/blog/service" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/my-blog/src/main/java/com/blog/mapper" />
+    <property name="last_opened_file_path" value="D:/yusys/funstreetmanage" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="settings.editor.selected.configurable" value="spring.boot" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.blog.filter" />
+      <recent name="com.blog.config" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\42563\Desktop\Shelter\my-blog\src\main\java\com\blog\mapper\xml" />
     </key>
@@ -124,6 +174,11 @@
     </key>
   </component>
   <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
     <option name="ruleStates">
       <list>
         <RuleState>
@@ -135,7 +190,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.OSSTest.test1">
+  <component name="RunManager" selected="Spring Boot.MyApplication">
     <configuration name="OSSTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="my-blog" />
       <extension name="coverage">
@@ -183,6 +238,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="AdminApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="my-admin" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.blog.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.blog.AdminApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="MyApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="my-blog" />
       <extension name="coverage">
@@ -198,9 +266,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Spring Boot.MyApplication" />
+        <item itemvalue="Spring Boot.AdminApplication" />
         <item itemvalue="JUnit.OSSTest.test1" />
         <item itemvalue="JUnit.OSSTest" />
-        <item itemvalue="Spring Boot.MyApplication" />
         <item itemvalue="JUnit.OSSTest.test" />
       </list>
     </recent_temporary>
@@ -214,6 +283,7 @@
         </treeState>
       </serviceView>
     </option>
+    <option name="showServicesTree" value="false" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -236,7 +306,27 @@
       <workItem from="1657936342354" duration="3010000" />
       <workItem from="1657955659902" duration="16642000" />
       <workItem from="1658022828696" duration="18284000" />
-      <workItem from="1658122300260" duration="8123000" />
+      <workItem from="1658122300260" duration="13570000" />
+      <workItem from="1658567950235" duration="382000" />
+      <workItem from="1658580356725" duration="39000" />
+      <workItem from="1658710967144" duration="16000" />
+      <workItem from="1658719017807" duration="1627000" />
+      <workItem from="1658729331588" duration="1276000" />
+      <workItem from="1658730624353" duration="2877000" />
+      <workItem from="1658742897202" duration="110000" />
+      <workItem from="1658798280206" duration="11000" />
+      <workItem from="1658823263097" duration="27000" />
+      <workItem from="1658823395409" duration="5029000" />
+      <workItem from="1658828539133" duration="28000" />
+      <workItem from="1658828582695" duration="573000" />
+      <workItem from="1658901850679" duration="1719000" />
+      <workItem from="1658914644763" duration="1982000" />
+      <workItem from="1658969703819" duration="35000" />
+      <workItem from="1659078708951" duration="14000" />
+      <workItem from="1659582716212" duration="1737000" />
+      <workItem from="1659616177219" duration="82000" />
+      <workItem from="1659661506047" duration="1332000" />
+      <workItem from="1659663274721" duration="3661000" />
     </task>
     <servers />
   </component>
@@ -248,7 +338,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>

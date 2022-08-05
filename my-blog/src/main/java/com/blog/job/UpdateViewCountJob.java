@@ -20,8 +20,9 @@ public class UpdateViewCountJob {
     @Autowired
     private ArticleService articleService;
 
-//    加入@Scheduled注解，表示该方法为要执行的代码
-//    cron属性为定时规则
+    //方法上加入@Scheduled注解，表示该方法为要执行的代码
+    //主启动类上加入@EnableScheduled，来启动定时任务
+    //cron属性为定时规则
     @Scheduled(cron = "0/30 * * * * ?")
     public void updateViewCount(){
 

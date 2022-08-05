@@ -35,7 +35,7 @@ public class BlogLoginServiceImpl implements BlogLoginService {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword());
         //authenticationManager实际上会调用到UserDetailsService来进行用户认证
         //但默认的认证方法是在内存中查询，我们需要从数据库中查询
-        //因此我们需要重新创建一个UserDetails的实现类，实现自定义认证方法
+        //因此我们需要重写UserDetails的实现类，实现自定义认证方法
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
         //判断是否认证通过
         if (Objects.isNull(authenticate)){

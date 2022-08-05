@@ -16,7 +16,9 @@ import java.util.Objects;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     //Resource是用name注入，即bean的id属性
+    //会在Bean中寻找“userMapper”对应的实现类
     //Autowired是用type注入，即bean的class中，接口对应的实现类
+    //会在Bean中寻找“UserMapper”对应的类
     @Resource
     private UserMapper userMapper;
 
