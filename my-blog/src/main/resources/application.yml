@@ -27,6 +27,10 @@ spring:
     timeout: 0
     #redis连接池配置
 
+  #开启事务
+  transaction:
+    rollback-on-commit-failure: true
+
 mybatis-plus:
   configuration:
     #打印日志信息

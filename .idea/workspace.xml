@@ -2,51 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9708a099-58c7-4755-a6a3-6b258615aa95" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my-admin/src/main/java/com/blog/AdminApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my-admin/src/main/java/com/blog/config/SecurityConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my-admin/src/main/java/com/blog/controller/TagController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my-admin/src/main/java/com/blog/entity/Tag.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my-admin/src/main/java/com/blog/filter/JwtAuthenticationTokenFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my-admin/src/main/java/com/blog/mapper/TagMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my-admin/src/main/java/com/blog/service/TagService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my-admin/src/main/java/com/blog/service/impl/TagServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my-admin/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/1e13f7e6-1616-444d-9e05-1b30afe69735.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/1e13f7e6-1616-444d-9e05-1b30afe69735.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/easyCodeTableSetting.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/easyCodeTableSetting.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-admin/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/my-admin/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-admin/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/my-admin/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-admin/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/my-admin/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-admin/target/my-admin-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/my-admin/target/my-admin-1.0-SNAPSHOT.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/MyApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/MyApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/job/UpdateViewCountJob.java" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/job/UpdateViewCountJob.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/mapper/xml/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/mapper/xml/UserMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/service/impl/BlogLoginServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/service/impl/BlogLoginServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/service/impl/UserDetailsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/src/main/java/com/blog/service/impl/UserDetailsServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/my-blog/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/classes/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/target/classes/com/blog/MyApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/classes/com/blog/MyApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/target/classes/com/blog/controller/BlogLoginController.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/classes/com/blog/controller/BlogLoginController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/target/classes/com/blog/controller/CategoryController.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/classes/com/blog/controller/CategoryController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/target/classes/com/blog/controller/CommentController.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/classes/com/blog/controller/CommentController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/target/classes/com/blog/controller/UploadController.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/classes/com/blog/controller/UploadController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/target/classes/com/blog/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/classes/com/blog/controller/UserController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/target/classes/com/blog/job/UpdateViewCountJob.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/classes/com/blog/job/UpdateViewCountJob.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/target/classes/com/blog/mapper/xml/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/classes/com/blog/mapper/xml/UserMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/target/classes/com/blog/service/impl/UserDetailsServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/classes/com/blog/service/impl/UserDetailsServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/target/my-blog-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/my-blog-1.0-SNAPSHOT.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/target/surefire-reports/TEST-com.blog.OSSTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/surefire-reports/TEST-com.blog.OSSTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/target/surefire-reports/com.blog.OSSTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/surefire-reports/com.blog.OSSTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-blog/target/test-classes/com/blog/OSSTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/my-blog/target/test-classes/com/blog/OSSTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-framework/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/my-framework/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-framework/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/my-framework/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my-framework/target/my-framework-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/my-framework/target/my-framework-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/my-framework/src/main/java/com/blog/service/impl/UploadServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/my-framework/src/main/java/com/blog/service/impl/UploadServiceImpl.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -147,7 +105,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="spring.boot" />
+    <property name="settings.editor.selected.configurable" value="mybatisx.settings" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -327,6 +285,8 @@
       <workItem from="1659616177219" duration="82000" />
       <workItem from="1659661506047" duration="1332000" />
       <workItem from="1659663274721" duration="3661000" />
+      <workItem from="1659939515192" duration="6851000" />
+      <workItem from="1659950149592" duration="1453000" />
     </task>
     <servers />
   </component>
