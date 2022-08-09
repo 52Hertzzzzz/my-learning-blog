@@ -8,6 +8,7 @@ import com.blog.vo.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 /***
@@ -66,6 +67,11 @@ public class ArticleController {
     public Result<?> updateViewCount(@PathVariable("id") Long id){
         articleService.updateViewCount(id);
         return Result.ok();
+    }
+
+    @GetMapping("/dateTest")
+    public Result<?> dateTest(Date date){
+        return Result.ok(date);
     }
 
 }
