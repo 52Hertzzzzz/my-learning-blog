@@ -1,7 +1,21 @@
 server:
   port: 9999
+  servlet:
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true
 
 spring:
+  application:
+    name: adminservice
+  cloud:
+    nacos:
+      discovery:
+        namespace: d7160cc7-7feb-4f19-b8c1-6960128b6f8c
+        cluster-name: Xian
+        ephemeral: false
+
   datasource:
     url: jdbc:mysql://localhost:3306/mytest?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root
@@ -42,3 +56,23 @@ mybatis-plus:
       #主键自增策略
       id-type: auto
   mapper-locations: classpath*:com/blog/com.blog.mapper/xml/*.xml
+
+blogservice:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.alibaba.cloud.nacos.ribbon.NacosRule
+
+# 负载均衡
+ribbon:
+  eager-load:
+    enabled: true # 开启饥饿加载
+    clients: blogservice
+
+feign:
+  client:
+    config:
+      default: # 或者是想要调用的微服务名称，default代表全局配置
+        loggerLevel: FULL
+  httpclient:
+    enabled: true # 支持HttpClient的开关
+    max-connections: 200 # 最大连接数
+    max-connections-per-route: 50 # 单个路径的最大连接数

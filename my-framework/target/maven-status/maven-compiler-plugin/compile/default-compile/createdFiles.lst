@@ -1,4 +1,5 @@
 com\blog\handler\security\AuthenticationEntryPointImpl.class
+com\blog\utils\ExcelExportUtils.class
 com\blog\filter\JwtAuthenticationTokenFilter.class
 com\blog\service\impl\UploadServiceImpl.class
 com\blog\config\FastJsonRedisSerializer.class
@@ -15,6 +16,7 @@ com\blog\enums\AppHttpCodeEnum.class
 com\blog\constants\CommonConstant.class
 com\blog\utils\RedisCache.class
 com\blog\aspect\LogAspect.class
+com\blog\convert\StringToDateConverter.class
 com\blog\handler\security\AccessDeniedHandlerImpl.class
 com\blog\config\WebConfig.class
 com\blog\handler\mybatisplus\MyMetaObjectHandler.class

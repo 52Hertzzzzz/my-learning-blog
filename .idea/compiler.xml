@@ -9,9 +9,17 @@
         <outputRelativeToContentRoot value="true" />
         <module name="my-blog" />
         <module name="my-admin" />
+        <module name="feign-api" />
+        <module name="gateway" />
         <module name="my-framework" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8" />
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="my-admin" options="" />
+      <module name="my-framework" options="" />
+    </option>
   </component>
 </project>

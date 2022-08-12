@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE com.blog.mapper
+<!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-com.blog.mapper.dtd">
-<com.blog.mapper namespace="com.blog.com.blog.mapper.UserMapper">
+<mapper namespace="com.blog.mapper.UserMapper">
     
     <select id="userNameExist" resultType="Integer">
         select count(*) from sys_user
@@ -18,4 +18,4 @@
         and del_flag = 0
     </select>
 
-</com.blog.mapper>
+</mapper>

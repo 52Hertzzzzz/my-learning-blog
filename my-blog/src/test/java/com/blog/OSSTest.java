@@ -70,7 +70,7 @@ public class OSSTest {
 
     }
 
-    @Test
+//    @Test
     public void test1(){
         String originalFilename = "5.考勤报工-普通员工使用手册v1.0.docx";
         String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));

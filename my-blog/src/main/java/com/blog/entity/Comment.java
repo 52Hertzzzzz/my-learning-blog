@@ -26,6 +26,7 @@ public class Comment  {
 
     //评论类型（0代表文章评论，1代表友链评论）
     private String type;
+
     //文章id
     private Long articleId;
     //根评论id

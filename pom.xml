@@ -14,12 +14,17 @@
         <module>my-framework</module>
         <module>my-admin</module>
         <module>my-blog</module>
+        <module>feign-api</module>
+        <module>gateway</module>
     </modules>
 
     <!--    属性-->
     <properties>
         <project.bulid.sourceEncoding>UTF-8</project.bulid.sourceEncoding>
         <java.version>1.8</java.version>
+        <spring.cloud-version>Hoxton.SR8</spring.cloud-version>
+        <spring.cloud.alibaba-version>2.2.3.RELEASE</spring.cloud.alibaba-version>
+        <spring.boot-version>2.3.2.RELEASE</spring.boot-version>
     </properties>
 
 <!--    父模块对子模块的依赖版本控制，指定子模块依赖的版本号-->
@@ -31,7 +36,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>2.5.0</version>
+                <version>${spring.boot-version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -88,6 +93,24 @@
                 <version>3.9</version>
             </dependency>
 
+            <!--nacos的管理依赖-->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring.cloud.alibaba-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- springCloud -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
         </dependencies>
 
     </dependencyManagement>
@@ -104,5 +127,20 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://maven.aliyun.com/repository/public</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>central</id>
+            <url>https://maven.aliyun.com/repository/public</url>
+        </pluginRepository>
+    </pluginRepositories>
+
 
 </project>

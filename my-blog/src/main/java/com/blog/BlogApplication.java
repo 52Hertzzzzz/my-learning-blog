@@ -16,15 +16,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableScheduling
 //启动swagger
 @EnableSwagger2
-//@ConfigurationPropertiesScan
-public class MyApplication {
+//@EnableFeignClients
+public class BlogApplication {
 
-    public static final Logger logger = LoggerFactory.getLogger(MyApplication.class);
-
+    public static final Logger logger = LoggerFactory.getLogger(BlogApplication.class);
 
     public static void main(String[] args) {
 
-        SpringApplication.run(MyApplication.class, args);
+        SpringApplication.run(BlogApplication.class, args);
         logger.info("\n" + "Welcome :3" + "\n" +
                 "   _____ _          _ _            \n" +
                 "  / ____| |        | | |           \n" +
