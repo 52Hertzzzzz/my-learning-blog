@@ -7,9 +7,9 @@ spring:
 
   cloud:
     nacos:
-      server-addr: localhost:8848
+      server-addr: 192.168.190.129:8848
       discovery:
-        namespace: d7160cc7-7feb-4f19-b8c1-6960128b6f8c
+        namespace: b288257e-bee0-464d-af61-bb397ce42e10
         cluster-name: Xian
         ephemeral: false
     gateway:

@@ -12,14 +12,14 @@ spring:
   cloud:
     nacos:
       discovery:
-        namespace: d7160cc7-7feb-4f19-b8c1-6960128b6f8c
+        namespace: b288257e-bee0-464d-af61-bb397ce42e10
         cluster-name: Xian
         ephemeral: false
 
   datasource:
-    url: jdbc:mysql://localhost:3306/mytest?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://192.168.190.129:3306/sg_blog?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root
-    password: '123456'
+    password: '200058'
     driver-class-name: com.mysql.cj.jdbc.Driver
   #文件上传设置
   servlet:
@@ -35,7 +35,7 @@ spring:
   redis:
     #数据库索引
     database: 0
-    host: localhost
+    host: 192.168.190.129
     port: 6379
     password: ""
     timeout: 0

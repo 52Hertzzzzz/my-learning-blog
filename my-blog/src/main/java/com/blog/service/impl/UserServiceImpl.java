@@ -72,13 +72,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (!StringUtils.hasText(user.getEmail())){
             throw new SystemException(AppHttpCodeEnum.EMAIL_NOT_NULL);
         }
+
         //数据重复判断（用户名，邮箱等）
-        if (userNameExist(user.getUserName()) > 0){
-            throw new SystemException(AppHttpCodeEnum.USERNAME_EXIST);
-        }
         if (nickNameExist(user.getNickName()) > 0){
             throw new SystemException(AppHttpCodeEnum.NICKNAME_EXIST);
         }
+        if (userNameExist(user.getUserName()) > 0){
+            throw new SystemException(AppHttpCodeEnum.USERNAME_EXIST);
+        }
+
         //明文密码加密处理
         String encodePassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodePassword);
