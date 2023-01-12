@@ -9,13 +9,15 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
 
-<!--    多模块开发：聚合与继承-->
+    <!--    多模块开发：聚合与继承-->
     <modules>
         <module>my-framework</module>
         <module>my-admin</module>
         <module>my-blog</module>
         <module>feign-api</module>
         <module>gateway</module>
+        <module>rabbitmq-consumer</module>
+        <module>rabbitmq-producer</module>
     </modules>
 
     <!--    属性-->
@@ -27,7 +29,7 @@
         <spring.boot-version>2.3.2.RELEASE</spring.boot-version>
     </properties>
 
-<!--    父模块对子模块的依赖版本控制，指定子模块依赖的版本号-->
+    <!--    父模块对子模块的依赖版本控制，指定子模块依赖的版本号-->
     <dependencyManagement>
 
         <dependencies>
@@ -41,28 +43,28 @@
                 <scope>import</scope>
             </dependency>
 
-<!--            fastjson-->
+            <!--            fastjson-->
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>1.2.33</version>
             </dependency>
 
-<!--            jwt-->
+            <!--            jwt-->
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt</artifactId>
                 <version>0.9.0</version>
             </dependency>
 
-<!--            mybatis plus-->
+            <!--            mybatis plus-->
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>3.4.3</version>
             </dependency>
 
-<!--            阿里云OSS-->
+            <!--            阿里云OSS-->
             <dependency>
                 <groupId>com.aliyun.oss</groupId>
                 <artifactId>aliyun-sdk-oss</artifactId>

@@ -10,12 +10,12 @@ spring:
   application:
     name: blogservice
 
-  cloud:
-    nacos:
-      discovery:
-        cluster-name: Xian
-        namespace: b288257e-bee0-464d-af61-bb397ce42e10
-        ephemeral: false
+#  cloud:
+#    nacos:
+#      discovery:
+#        cluster-name: Xian
+#        namespace: b288257e-bee0-464d-af61-bb397ce42e10
+#        ephemeral: false
 
   datasource:
     url: jdbc:mysql://192.168.190.129:3306/sg_blog?characterEncoding=utf-8&serverTimezone=Asia/Shanghai

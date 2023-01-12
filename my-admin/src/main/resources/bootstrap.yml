@@ -6,7 +6,11 @@ spring:
   cloud:
     nacos:
       server-addr: 192.168.190.129:8848 # nacos地址
+      discovery:
+        cluster-name: Xian
+        namespace: b288257e-bee0-464d-af61-bb397ce42e10
+        ephemeral: false
       config:
-        server-addr: 192.168.190.129:8848 # nacos地址
         file-extension: yaml
         namespace: b288257e-bee0-464d-af61-bb397ce42e10
+        server-addr: 192.168.190.129:8848 # nacos地址

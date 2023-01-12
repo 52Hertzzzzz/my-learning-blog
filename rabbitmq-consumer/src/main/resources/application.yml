@@ -1,0 +1,16 @@
+server:
+  port: 9001
+  servlet:
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true
+
+spring:
+  application:
+    name: mqconsumer-service
+  datasource:
+    url: jdbc:mysql://192.168.190.129:3306/sg_blog?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: '200058'
+    driver-class-name: com.mysql.cj.jdbc.Driver

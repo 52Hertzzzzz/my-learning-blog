@@ -1,6 +1,6 @@
 spring:
   application:
-    name: blogservice
+    name: mqproducer-service
   profiles:
     active: dev # 环境
   cloud:

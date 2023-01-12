@@ -6,12 +6,14 @@ spring:
     name: gateway
 
   cloud:
-    nacos:
-      server-addr: 192.168.190.129:8848
-      discovery:
-        namespace: b288257e-bee0-464d-af61-bb397ce42e10
-        cluster-name: Xian
-        ephemeral: false
+
+#    nacos:
+#      server-addr: 192.168.190.129:8848
+#      discovery:
+#        namespace: b288257e-bee0-464d-af61-bb397ce42e10
+#        cluster-name: Xian
+#        ephemeral: false
+
     gateway:
       routes:
         - id: adminservice # 路由标示，必须唯一
