@@ -14,3 +14,29 @@ spring:
     username: root
     password: '200058'
     driver-class-name: com.mysql.cj.jdbc.Driver
+  #文件上传设置
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 5MB
+  #SpringSecurity默认账号密码
+  security:
+    user:
+      name: root
+      password: root
+  #redis配置
+  redis:
+    #数据库索引
+    database: 0
+    host: 192.168.190.129
+    port: 6379
+    password: ""
+    timeout: 0
+    #redis连接池配置
+
+  rabbitmq:
+    host: 192.168.190.129
+    port: 5672
+    username: 52hz
+    password: 200058
+    virtual-host: /

@@ -58,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/userInfo").authenticated()
                 .antMatchers("/upload").authenticated()
 //                .antMatchers("/link/getAllLink").authenticated()
-                // 除上面外的所有请求全部不需要认证即可访问
+                // 除上面外的所有请求全部需要认证
                 .anyRequest().authenticated();
 
         //禁用Security自带的logout接口，使用自定义logout接口
