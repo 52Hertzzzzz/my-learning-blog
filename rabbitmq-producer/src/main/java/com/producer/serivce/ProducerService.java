@@ -1,6 +1,6 @@
 package com.producer.serivce;
 
-import com.blog.entity.MessageEntity;
+import com.framework.entity.MessageEntity;
 
 public interface ProducerService {
 

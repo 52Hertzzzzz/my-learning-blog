@@ -22,6 +22,7 @@
 
     <!--    属性-->
     <properties>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <project.bulid.sourceEncoding>UTF-8</project.bulid.sourceEncoding>
         <java.version>1.8</java.version>
         <spring.cloud-version>Hoxton.SR8</spring.cloud-version>

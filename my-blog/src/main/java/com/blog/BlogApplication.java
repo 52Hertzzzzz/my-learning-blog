@@ -5,18 +5,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 //可以暂时禁用Security
 //@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.blog.*", "com.framework.*"})
 @MapperScan("com.blog.mapper")
 //启动定时任务
 @EnableScheduling
 //启动swagger
 @EnableSwagger2
-//@EnableFeignClients
+@EnableFeignClients(basePackages = {"com.blog.feign.clients"})
 public class BlogApplication {
 
     public static final Logger logger = LoggerFactory.getLogger(BlogApplication.class);

@@ -8,7 +8,7 @@ import com.blog.mapper.CategoryMapper;
 import com.blog.service.ArticleService;
 import com.blog.service.CategoryService;
 import com.blog.vo.CategoryVo;
-import com.blog.constants.SystemConstants;
+import com.framework.constants.SystemConstants;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

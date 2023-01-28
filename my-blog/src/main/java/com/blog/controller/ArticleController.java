@@ -1,7 +1,7 @@
 package com.blog.controller;
 
 import com.blog.service.ArticleService;
-import com.blog.utils.Result;
+import com.framework.utils.Result;
 import com.blog.vo.ArticleDetailVo;
 import com.blog.vo.HotArticleVo;
 import com.blog.vo.PageVo;

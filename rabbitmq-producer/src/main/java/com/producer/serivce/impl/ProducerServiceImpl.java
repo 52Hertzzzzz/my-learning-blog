@@ -1,6 +1,6 @@
 package com.producer.serivce.impl;
 
-import com.blog.entity.MessageEntity;
+import com.framework.entity.MessageEntity;
 import com.producer.serivce.ProducerService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;

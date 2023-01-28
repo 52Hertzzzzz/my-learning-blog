@@ -1,11 +1,11 @@
 package com.blog.controller;
 
-import com.blog.constants.SystemConstants;
+import com.framework.constants.SystemConstants;
 import com.blog.entity.Comment;
-import com.blog.enums.AppHttpCodeEnum;
-import com.blog.exception.SystemException;
+import com.framework.enums.AppHttpCodeEnum;
+import com.framework.exception.SystemException;
 import com.blog.service.CommentService;
-import com.blog.utils.Result;
+import com.framework.utils.Result;
 import com.blog.vo.PageVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

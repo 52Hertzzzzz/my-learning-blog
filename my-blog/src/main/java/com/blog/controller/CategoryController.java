@@ -1,9 +1,9 @@
 package com.blog.controller;
 
-import com.blog.entity.NacosConfigEntity;
+import com.blog.feign.entity.NacosConfigEntity;
 import com.blog.service.CategoryService;
-import com.blog.utils.ExcelExportUtils;
-import com.blog.utils.Result;
+import com.framework.utils.ExcelExportUtils;
+import com.framework.utils.Result;
 import com.blog.vo.CategoryVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;

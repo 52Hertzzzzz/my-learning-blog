@@ -1,7 +1,7 @@
 package com.blog.controller;
 
-import com.blog.service.UploadService;
-import com.blog.utils.Result;
+import com.framework.service.UploadService;
+import com.framework.utils.Result;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;

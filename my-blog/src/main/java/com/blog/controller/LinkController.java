@@ -2,7 +2,7 @@ package com.blog.controller;
 
 
 import com.blog.service.LinkService;
-import com.blog.utils.Result;
+import com.framework.utils.Result;
 import com.blog.vo.LinkVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

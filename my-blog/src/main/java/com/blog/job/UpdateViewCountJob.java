@@ -2,7 +2,7 @@ package com.blog.job;
 
 import com.blog.entity.Article;
 import com.blog.service.ArticleService;
-import com.blog.utils.RedisCache;
+import com.framework.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

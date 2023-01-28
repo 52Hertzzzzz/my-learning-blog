@@ -1,10 +1,10 @@
 package com.blog.controller;
 
-import com.blog.entity.User;
-import com.blog.enums.AppHttpCodeEnum;
-import com.blog.exception.SystemException;
+import com.framework.entity.User;
+import com.framework.enums.AppHttpCodeEnum;
+import com.framework.exception.SystemException;
 import com.blog.service.BlogLoginService;
-import com.blog.utils.Result;
+import com.framework.utils.Result;
 import com.blog.vo.BlogUserLoginVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;

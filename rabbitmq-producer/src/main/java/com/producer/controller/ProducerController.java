@@ -1,10 +1,10 @@
 package com.producer.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.blog.entity.MessageEntity;
-import com.blog.enums.AppHttpCodeEnum;
-import com.blog.exception.SystemException;
-import com.blog.utils.Result;
+import com.framework.entity.MessageEntity;
+import com.framework.enums.AppHttpCodeEnum;
+import com.framework.exception.SystemException;
+import com.framework.utils.Result;
 import com.producer.serivce.ProducerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

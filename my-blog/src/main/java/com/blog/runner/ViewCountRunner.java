@@ -2,7 +2,7 @@ package com.blog.runner;
 
 import com.blog.entity.Article;
 import com.blog.mapper.ArticleMapper;
-import com.blog.utils.RedisCache;
+import com.framework.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

@@ -1,11 +1,11 @@
 package com.blog.service.impl;
 
-import com.blog.entity.LoginUser;
-import com.blog.entity.User;
+import com.framework.entity.LoginUser;
+import com.framework.entity.User;
 import com.blog.service.BlogLoginService;
-import com.blog.utils.JwtUtil;
-import com.blog.utils.RedisCache;
-import com.blog.utils.Result;
+import com.framework.utils.JwtUtil;
+import com.framework.utils.RedisCache;
+import com.framework.utils.Result;
 import com.blog.vo.BlogUserLoginVo;
 import com.blog.vo.UserInfoVo;
 import org.springframework.beans.BeanUtils;

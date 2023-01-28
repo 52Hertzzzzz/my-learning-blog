@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 //不手动扫描父包就无法注入Security相关的bean，原因未知
-@SpringBootApplication(scanBasePackages = {"com.blog.*", "com.consumer.*"})
+@SpringBootApplication(scanBasePackages = {"com.framework.*", "com.consumer.*"})
 public class ConsumerApplication {
 
     public static void main(String[] args) {
