@@ -10,10 +10,32 @@ spring:
   application:
     name: mqconsumer-service
   datasource:
-    url: jdbc:mysql://192.168.190.129:3306/sg_blog?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
-    username: root
-    password: '200058'
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    #多数据源配置
+    dynamic:
+      primary: master #默认数据源
+      strict: false #严格匹配数据源,默认false. true未匹配到指定数据源时抛异常,false使用默认数据源
+      datasource:
+        master:
+          url: jdbc:mysql://192.168.190.129:3306/sg_blog?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+          username: root
+          password: '200058'
+          driver-class-name: com.mysql.cj.jdbc.Driver
+
+        slave:
+          url: jdbc:mysql://127.0.0.1:3306/sg_blog?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+          username: root
+          password: '200058'
+          driver-class-name: com.mysql.cj.jdbc.Driver
+
+      # 连接池配置：
+      druid:
+        initial-size: 2 # 初始化时建立物理连接的个数。默认0
+        max-active: 10 # 最大连接池数量，默认8
+        min-idle: 2 # 最小连接池数量
+        max-wait: 2000 # 获取连接时最大等待时间，单位毫秒。
+        pool-prepared-statements: false # 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
+        max-pool-prepared-statement-per-connection-size: -1 # 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。在Druid中，不会存在Oracle下PSCache占用内存过多的问题，可以把这个数值配置大一些，比如说100
+
   #文件上传设置
   servlet:
     multipart:

@@ -32,7 +32,6 @@
 
     <!--    父模块对子模块的依赖版本控制，指定子模块依赖的版本号-->
     <dependencyManagement>
-
         <dependencies>
 
             <!--        SpringBoot-->
@@ -114,8 +113,21 @@
                 <scope>import</scope>
             </dependency>
 
-        </dependencies>
+            <!--数据库连接池-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>1.1.10</version>
+            </dependency>
 
+            <!--多数据源配置-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <version>2.5.6</version>
+            </dependency>
+
+        </dependencies>
     </dependencyManagement>
 
     <build>
@@ -144,6 +156,5 @@
             <url>https://maven.aliyun.com/repository/public</url>
         </pluginRepository>
     </pluginRepositories>
-
 
 </project>

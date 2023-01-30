@@ -1,5 +1,6 @@
 package com.blog;
 
+import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +12,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 //可以暂时禁用Security
 //@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
-@SpringBootApplication(scanBasePackages = {"com.blog.*", "com.framework.*"})
+@SpringBootApplication(scanBasePackages = {"com.blog.*", "com.framework.*"}, exclude = {DruidDataSourceAutoConfigure.class})
 @MapperScan("com.blog.mapper")
 //启动定时任务
 @EnableScheduling

@@ -1,7 +1,6 @@
 package com.admin;
 
-import com.blog.feign.clients.BlogClient;
-import com.framework.config.SecurityConfig;
+import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
 import com.netflix.loadbalancer.IRule;
 import com.netflix.loadbalancer.RandomRule;
 import org.mybatis.spring.annotation.MapperScan;
@@ -12,8 +11,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
-@SpringBootApplication(scanBasePackages = {"com.admin.*", "com.framework.*"})
-//@SpringBootApplication(scanBasePackages = {"com.admin.*"})
+@SpringBootApplication(scanBasePackages = {"com.admin.*", "com.framework.*"}, exclude = {DruidDataSourceAutoConfigure.class})
 @MapperScan("com.admin.mapper")
 @EnableFeignClients(basePackages = {"com.blog.feign.clients"})
 public class AdminApplication {
