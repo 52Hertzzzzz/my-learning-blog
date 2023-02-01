@@ -7,12 +7,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
 
 @RestController
 @RequestMapping("/threadTest")
 @Slf4j
 public class ThreadTestController {
+
+    private static final ExecutorService executor = Executors.newFixedThreadPool(5);
 
     private static ReentrantLock lock = new ReentrantLock(true);
 
@@ -57,6 +61,34 @@ public class ThreadTestController {
         }
 
         return Result.ok(s);
+    }
+
+    @GetMapping("/test3")
+    public Result<?> test3(@RequestParam(required = true) String userName) {
+        log.info("Test3 Start");
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Runnable runnable = () -> {
+            int i = 3;
+            while (i > 0) {
+                log.info("Thread Running...");
+                try {
+                    Thread.sleep(500);
+                    i--;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
+
+        log.info("Test3 Complete");
+        return Result.ok("ok");
     }
 
 }
