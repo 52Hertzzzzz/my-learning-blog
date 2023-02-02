@@ -1,10 +1,13 @@
 package com.framework.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.framework.handler.mybatisplus.MyMetaObjectHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class MybatisPlusConfig {
@@ -19,5 +22,11 @@ public class MybatisPlusConfig {
         mybatisPlusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
         return mybatisPlusInterceptor;
     }
+
+    //@Bean
+    //@Primary
+    //public MetaObjectHandler metaObjectHandler() {
+    //    return new MyMetaObjectHandler();
+    //}
 
 }

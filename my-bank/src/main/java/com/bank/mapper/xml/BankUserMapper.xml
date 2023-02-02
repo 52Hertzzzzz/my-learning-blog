@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bank.mapper.BankUserMapper">
+
+    <insert id="registerUser" parameterType="com.bank.entity.BankUserInfo">
+        INSERT INTO bank_user_info (user_name, bank_card_num, password, sexual, age, create_by, create_time)
+        VALUES
+        (#{userName}, #{bankCardNum}, #{password}, #{sexual}, #{age}, #{createBy}, #{createTime})
+    </insert>
+
+</mapper>

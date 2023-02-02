@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bank.mapper.BankCardMapper">
+
+    <insert id="registerUser" parameterType="com.bank.entity.BankUserInfo">
+        INSERT INTO bank_user_info (user_name, bank_card_num, password, sexual, age, create_by, create_time)
+        VALUES
+        (#{userName}, #{bankCardNum}, #{password}, #{sexual}, #{age}, #{createBy}, #{createTime})
+    </insert>
+
+    <insert id="applyCreditCard" parameterType="com.bank.entity.CreditCardInfo">
+        INSERT INTO credit_card_info (bank_card_num, money_limit, create_by, create_time)
+        VALUES
+        (#{bankCardNum}, #{moneyLimit}, #{createBy}, #{createTime})
+    </insert>
+
+    <insert id="applyBankCard" parameterType="com.bank.entity.BankCardInfo">
+        INSERT INTO bank_card_info (bank_card_num, password, bank_name, create_by, create_time)
+        VALUES
+        (#{bankCardNum}, #{password}, #{bankName}, #{createBy}, #{createTime})
+    </insert>
+
+</mapper>
