@@ -6,19 +6,17 @@ import com.bank.entity.CreditCardInfo;
 import com.bank.mapper.BankCardMapper;
 import com.bank.mapper.BankUserMapper;
 import com.bank.mapper.CreditCardMapper;
+import com.bank.service.AsyncBankService;
 import com.bank.service.BankRegisterService;
 import com.bank.vo.BankRegisterVo;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class BankRegisterServiceImpl extends ServiceImpl<BankCardMapper, BankCardInfo> implements BankRegisterService {
@@ -32,9 +30,12 @@ public class BankRegisterServiceImpl extends ServiceImpl<BankCardMapper, BankCar
     @Autowired
     private CreditCardMapper creditCardMapper;
 
+    @Autowired
+    private AsyncBankService asyncBankService;
+
     @Override
-    @Transactional(rollbackFor = RuntimeException.class)
-    public Integer applyBankCard(BankRegisterVo bankRegisterVo) throws ExecutionException, InterruptedException {
+    @Transactional(rollbackFor = Exception.class)
+    public Integer applyBankCard(BankRegisterVo bankRegisterVo) throws InterruptedException {
         String UUID = IdWorker.get32UUID().substring(16);
         bankRegisterVo.setBankCardNum(UUID);
 
@@ -47,39 +48,21 @@ public class BankRegisterServiceImpl extends ServiceImpl<BankCardMapper, BankCar
         creditCardInfo.setMoneyLimit(10000.00);
 
         //主线程执行，办理银行卡
+        Thread.sleep(5000);
         int insert = bankCardMapper.applyBankCard(bankCardInfo);
-        int insert1 = bankUserMapper.registerUser(bankUserInfo);
-        int insert2 = creditCardMapper.applyCreditCard(creditCardInfo);
+
+        //会导致死锁!!!
+        //Thread.currentThread().join();
 
         //子线程执行，申请会员 + 信用卡办理
-        //Future<Integer> future1 = registerUser(bankUserInfo);
-        //Future<Integer> future2 = applyCreditCard(creditCardInfo);
+        CompletableFuture<Integer> future = asyncBankService.registerUser(bankUserInfo);
+        CompletableFuture<Integer> future1 = asyncBankService.applyCreditCard(creditCardInfo);
+        CompletableFuture.allOf(future, future1);
+        //Integer insert1 = future.join();
+        //Integer insert2 = future1.join();
+        //HashMap<String, Object> objectObjectHashMap = Maps.newHashMapWithExpectedSize(6);
 
         return insert;
-    }
-
-    @Async("common")
-    Future<Integer> registerUser(BankUserInfo bankUserInfo) {
-        Integer insert = bankUserMapper.registerUser(bankUserInfo);
-        try {
-            //模拟阻塞3秒
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return new AsyncResult<>(insert);
-    }
-
-    @Async("common")
-    Future<Integer> applyCreditCard(CreditCardInfo creditCardInfo) {
-        Integer insert = creditCardMapper.applyCreditCard(creditCardInfo);
-        try {
-            //模拟阻塞3秒
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return new AsyncResult<>(insert);
     }
 
 }
