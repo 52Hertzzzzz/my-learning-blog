@@ -18,6 +18,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!--        bootstrap.yml不读取时加入-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+
 <!--        lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -29,6 +35,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>asm</artifactId>
+                    <groupId>org.ow2.asm</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
 <!--        SpringSecurity启动器-->
@@ -117,7 +129,6 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>6.0.9.Final</version>
         </dependency>
 
     </dependencies>

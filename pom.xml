@@ -114,6 +114,13 @@
                 <scope>import</scope>
             </dependency>
 
+            <!--        bootstrap.yml不读取时加入-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-bootstrap</artifactId>
+                <version>3.0.1</version>
+            </dependency>
+
             <!--数据库连接池-->
             <dependency>
                 <groupId>com.alibaba</groupId>
@@ -132,6 +139,7 @@
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
+                <version>6.0.9.Final</version>
             </dependency>
 
         </dependencies>

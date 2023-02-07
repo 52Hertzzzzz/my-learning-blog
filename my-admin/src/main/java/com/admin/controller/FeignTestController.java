@@ -1,14 +1,19 @@
 package com.admin.controller;
 
+import com.admin.entity.TestPerson;
 import com.blog.feign.clients.BlogClient;
 import com.blog.feign.clients.RabbitMQClient;
 import com.blog.feign.entity.CategoryVo;
 import com.blog.feign.entity.NacosConfigEntity;
 import com.framework.utils.Result;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,6 +28,10 @@ public class FeignTestController {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Resource
+    //@Qualifier("testPerson1")
+    private TestPerson testPerson2;
 
     @GetMapping("/test1")
     public Result<?> test1() {
@@ -47,6 +56,12 @@ public class FeignTestController {
     public Result<?> test4(@RequestBody String string) {
         Result<?> result = rabbitMQClient.send1(string);
         return result;
+    }
+
+    @GetMapping("/test5")
+    public Result<?> test5() {
+        String s = testPerson2.toString();
+        return Result.ok(s);
     }
 
 }

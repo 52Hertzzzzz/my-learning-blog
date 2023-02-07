@@ -1,7 +1,5 @@
 package com.bank.controller;
 
-import com.alibaba.excel.constant.ExcelXmlConstants;
-import com.bank.entity.BankCardInfo;
 import com.bank.service.BankRegisterService;
 import com.bank.vo.BankRegisterVo;
 import com.framework.utils.BeanValidators;
@@ -13,7 +11,7 @@ import javax.validation.Validator;
 
 @RestController
 @RequestMapping("/bankRegister")
-public class BankRegisterController {
+public class BankController {
 
     @Autowired
     private Validator validator;
@@ -32,7 +30,7 @@ public class BankRegisterController {
             //4.使用原子类 AtomicInteger
 
             //参数校验
-            //和@Valid不要同时使用，否则会失效，无法获取自定义异常
+            //不要与@Valid同时使用，否则会与工具类冲突，无法获取自定义异常
             BeanValidators.validateWithException(validator, bankRegisterVo);
             Integer integer = bankRegisterService.applyBankCard(bankRegisterVo);
             return Result.ok("银行卡办理成功");
@@ -40,7 +38,6 @@ public class BankRegisterController {
             e.printStackTrace();
             return Result.error(e.getMessage());
         }
-
     }
 
 }
