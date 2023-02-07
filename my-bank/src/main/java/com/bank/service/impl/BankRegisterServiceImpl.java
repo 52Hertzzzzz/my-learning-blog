@@ -12,7 +12,6 @@ import com.bank.vo.BankRegisterVo;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.framework.exception.BankException;
-import org.checkerframework.checker.units.qual.C;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -21,7 +20,6 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
@@ -82,7 +80,7 @@ public class BankRegisterServiceImpl extends ServiceImpl<BankCardMapper, BankCar
 
             latch.await();
             latchMain.countDown();
-            //latchMain.await();
+            latchMain.await();
             if (atomicInteger.get() > 0) {
                 transactionManager.rollback(transaction);
                 log.info("子线程事务报错，开始回滚");
@@ -91,6 +89,8 @@ public class BankRegisterServiceImpl extends ServiceImpl<BankCardMapper, BankCar
                 //手动提交
                 transactionManager.commit(transaction);
             }
+
+            //TODO 修改异常类型，精准捕获，使该trycatch块能够抛出BankException
         } catch (Exception e) {
             atomicInteger.getAndIncrement();
             //手动回滚

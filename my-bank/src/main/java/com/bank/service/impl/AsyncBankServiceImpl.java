@@ -57,12 +57,12 @@ public class AsyncBankServiceImpl implements AsyncBankService {
                 transactionManager.commit(transaction);
             }
 
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
+            log.info("子线程事务报错，开始回滚");
             atomicInteger.getAndIncrement();
-            latch.countDown();
             //手动回滚
             transactionManager.rollback(transaction);
-            log.info("子线程事务报错，开始回滚");
+            latch.countDown();
         }
 
         return CompletableFuture.completedFuture(insert);
@@ -91,12 +91,12 @@ public class AsyncBankServiceImpl implements AsyncBankService {
                 transactionManager.commit(transaction);
             }
 
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
+            log.info("子线程事务报错，开始回滚");
             atomicInteger.getAndIncrement();
-            latch.countDown();
             //手动回滚
             transactionManager.rollback(transaction);
-            log.info("子线程事务报错，开始回滚");
+            latch.countDown();
         }
 
         return CompletableFuture.completedFuture(insert);
