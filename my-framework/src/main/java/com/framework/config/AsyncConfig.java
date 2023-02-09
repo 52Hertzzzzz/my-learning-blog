@@ -24,7 +24,7 @@ public class AsyncConfig {
     private static final LinkedBlockingQueue LINKED_BLOCKING_QUEUE = new LinkedBlockingQueue(50);
 
     //自定义Spring默认线程池
-    //ThreadPoolTaskExecutor vs ThreadPoolExecutor 区别在于：
+    //ThreadPoolTaskExecutor vs ThreadPoolExecutor ：
     //ThreadPoolTaskExecutor是对ThreadPoolExecutor的进一步封装
     //ThreadPoolTaskExecutor来源于Spring，ThreadPoolExecutor属于JUC
     //ThreadPoolTaskExecutor需要声明initialize，ThreadPoolExecutor不需要
@@ -42,10 +42,12 @@ public class AsyncConfig {
         executor.setMaxPoolSize(5);
         //配置队列大小
         executor.setQueueCapacity(10240);
+        //配置空闲线程保留时间
+        executor.setKeepAliveSeconds(60);
         //配置线程池中的线程的名称前缀
         executor.setThreadNamePrefix("AsyncCommonThread-");
-        // 设置拒绝策略：当pool已经达到max size的时候，如何处理新任务
-        // CALLER_RUNS：不在新线程中执行任务，而是有调用者所在的线程来执行
+        //设置饱和策略：当pool已经达到max size的时候，如何处理新任务
+        //CALLER_RUNS：不在新线程中执行任务，而是有调用者所在的线程来执行
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         //执行初始化
         executor.initialize();

@@ -11,7 +11,8 @@ import com.bank.service.BankRegisterService;
 import com.bank.vo.BankRegisterVo;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.framework.exception.BankException;
+import com.framework.enums.AppHttpCodeEnum;
+import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 
+import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -52,11 +54,13 @@ public class BankRegisterServiceImpl extends ServiceImpl<BankCardMapper, BankCar
     @Override
     //手动管理事务
     //@Transactional(rollbackFor = Exception.class)
-    public Integer applyBankCard(BankRegisterVo bankRegisterVo) throws InterruptedException {
+    public Integer applyBankCard(BankRegisterVo bankRegisterVo) {
         TransactionStatus transaction = transactionManager.getTransaction(transactionDefinition);
         AtomicInteger atomicInteger = new AtomicInteger(0);
         CountDownLatch latchMain = new CountDownLatch(1);
         CountDownLatch latch = new CountDownLatch(2);
+        Integer result = null;
+
         try {
             String UUID = IdWorker.get32UUID().substring(16);
             bankRegisterVo.setBankCardNum(UUID);
@@ -82,25 +86,26 @@ public class BankRegisterServiceImpl extends ServiceImpl<BankCardMapper, BankCar
             latchMain.countDown();
             latchMain.await();
             if (atomicInteger.get() > 0) {
-                transactionManager.rollback(transaction);
                 log.info("子线程事务报错，开始回滚");
-                throw new BankException(500, "子线程事务报错，开始回滚");
+                transactionManager.rollback(transaction);
+                result = AppHttpCodeEnum.BANK_REGISTER_FAILED.getCode();
             } else {
                 //手动提交
                 transactionManager.commit(transaction);
+                result = AppHttpCodeEnum.BANK_REGISTER_SUCCESS.getCode();
             }
 
             //TODO 修改异常类型，精准捕获，使该trycatch块能够抛出BankException
         } catch (Exception e) {
-            atomicInteger.getAndIncrement();
+            log.info("主线程事务报错，开始回滚");
             //手动回滚
             transactionManager.rollback(transaction);
-            log.info("主线程事务报错，开始回滚");
+            atomicInteger.getAndIncrement();
             latchMain.countDown();
-            throw new BankException(500, "主线程事务报错，开始回滚");
+            result = AppHttpCodeEnum.BANK_REGISTER_FAILED.getCode();
         }
 
-        return null;
+        return result;
     }
 
 }
