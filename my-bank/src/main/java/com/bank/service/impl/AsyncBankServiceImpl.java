@@ -45,7 +45,7 @@ public class AsyncBankServiceImpl implements AsyncBankService {
             log.info(Thread.currentThread().getName() + "running!");
             insert = bankUserMapper.registerUser(bankUserInfo);
             //模拟阻塞3秒
-            Thread.sleep(3000);
+            //Thread.sleep(3000);
 
             latch.countDown();
             latchMain.await();
@@ -79,7 +79,7 @@ public class AsyncBankServiceImpl implements AsyncBankService {
             log.info(Thread.currentThread().getName() + "running!");
             insert = creditCardMapper.applyCreditCard(creditCardInfo);
             //模拟阻塞3秒
-            Thread.sleep(3000);
+            //Thread.sleep(3000);
 
             latch.countDown();
             latchMain.await();

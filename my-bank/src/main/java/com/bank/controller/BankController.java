@@ -25,7 +25,7 @@ public class BankController {
     public Result<?> applyBankCard(@RequestBody BankRegisterVo bankRegisterVo) {
         try {
 
-            //TODO 并发事务处理
+            //Todo:并发事务处理
             //1.悲观锁 select for update
             //2.乐观锁 + 版本号
             //3.mysql自带原子操作 排它锁 update

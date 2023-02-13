@@ -17,7 +17,7 @@ public class ProducerServiceImpl implements ProducerService {
 
     //队列名
     private static final String queueName1 = "order.pay";
-    private static final String queueName2 = "order.pay2";
+    private static final String queueName2 = "order.email";
 
     @Override
     public void sendTopic1(MessageEntity entity) {

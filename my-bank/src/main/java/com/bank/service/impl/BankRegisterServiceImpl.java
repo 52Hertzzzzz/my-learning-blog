@@ -12,9 +12,11 @@ import com.bank.vo.BankRegisterVo;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.framework.enums.AppHttpCodeEnum;
+import com.framework.utils.MailUtils;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -22,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 
-import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -43,6 +44,9 @@ public class BankRegisterServiceImpl extends ServiceImpl<BankCardMapper, BankCar
 
     @Autowired
     private AsyncBankService asyncBankService;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     //手动事务管理
     @Autowired
@@ -95,7 +99,10 @@ public class BankRegisterServiceImpl extends ServiceImpl<BankCardMapper, BankCar
                 result = AppHttpCodeEnum.BANK_REGISTER_SUCCESS.getCode();
             }
 
-            //TODO 修改异常类型，精准捕获，使该trycatch块能够抛出BankException
+            //邮件通知客户
+            MailUtils.sendMail("425633796@qq.com", "Hello, World", "<h1>Hello, World</h1>", true);
+            //rabbitTemplate.convertAndSend();
+
         } catch (Exception e) {
             log.info("主线程事务报错，开始回滚");
             //手动回滚
