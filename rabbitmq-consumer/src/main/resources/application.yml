@@ -62,3 +62,6 @@ spring:
     username: 52hz
     password: 200058
     virtual-host: /
+    listener:
+      simple:
+        acknowledge-mode: manual

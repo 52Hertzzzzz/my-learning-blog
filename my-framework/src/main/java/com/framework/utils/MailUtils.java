@@ -2,7 +2,7 @@ package com.framework.utils;
 
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
-import org.springframework.util.StringUtils;
+import org.assertj.core.util.Strings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +15,12 @@ public class MailUtils {
 
     public static void sendMail(String address, String subject, String htmlMsg, Boolean isSSL) throws EmailException {
 
-        if (StringUtils.isEmpty(address) || StringUtils.isEmpty(subject) || StringUtils.isEmpty(htmlMsg)) {
+        if (Strings.isNullOrEmpty(address) || Strings.isNullOrEmpty(subject) || Strings.isNullOrEmpty(htmlMsg)) {
             throw new EmailException();
         }
 
         try {
+
             HtmlEmail email = new HtmlEmail();
             List<String> list = new ArrayList<String>();
             list.add(address);

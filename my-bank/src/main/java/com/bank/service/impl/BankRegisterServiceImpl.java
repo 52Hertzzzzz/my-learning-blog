@@ -11,9 +11,8 @@ import com.bank.service.BankRegisterService;
 import com.bank.vo.BankRegisterVo;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.framework.entity.EMail;
 import com.framework.enums.AppHttpCodeEnum;
-import com.framework.utils.MailUtils;
-import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -100,11 +99,14 @@ public class BankRegisterServiceImpl extends ServiceImpl<BankCardMapper, BankCar
             }
 
             //邮件通知客户
-            MailUtils.sendMail("425633796@qq.com", "Hello, World", "<h1>Hello, World</h1>", true);
+            EMail eMail = new EMail("425633796@qq.com", "Hello, World", "<h1>Hello, World</h1>");
+            rabbitTemplate.convertAndSend("my.order", "order.email", eMail);
+            //MailUtils.sendMail("425633796@qq.com", "Hello, World", "<h1>Hello, World</h1>", true);
             //rabbitTemplate.convertAndSend();
 
         } catch (Exception e) {
             log.info("主线程事务报错，开始回滚");
+            e.printStackTrace();
             //手动回滚
             transactionManager.rollback(transaction);
             atomicInteger.getAndIncrement();
