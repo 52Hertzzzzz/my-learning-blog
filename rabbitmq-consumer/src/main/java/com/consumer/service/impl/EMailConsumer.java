@@ -31,9 +31,9 @@ public class EMailConsumer {
         long deliveryTag = message.getMessageProperties().getDeliveryTag();
         atomicInteger.getAndIncrement();
         try {
-            if (atomicInteger.get() % 2 == 0) {
-                throw new RuntimeException();
-            }
+            //if (atomicInteger.get() % 2 == 0) {
+            //    throw new RuntimeException();
+            //}
             MailUtils.sendMail(eMail.getAddress(), eMail.getSubject(), eMail.getContent(), true);
             channel.basicAck(deliveryTag, false);
         } catch (Exception e) {

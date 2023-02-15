@@ -1,5 +1,7 @@
 package com.bank.listener;
 
+import lombok.Data;
+
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
@@ -7,6 +9,7 @@ import java.util.concurrent.TimeUnit;
  * 延时队列存放对象，DelayQueue中必须存放Delayed实现类
  *
  */
+@Data
 public class OrderExpireTask implements Delayed {
 
     /**

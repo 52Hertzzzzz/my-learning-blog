@@ -2,6 +2,10 @@ package com.bank.entity;
 
 
 import java.io.Serializable;
+import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +27,7 @@ public class OrderInfo  {
     @TableId
     private Long id;
     
-    private String orderNum;
+    private String orderId;
     
     private String username;
     
@@ -34,5 +38,15 @@ public class OrderInfo  {
     private Double moneyAmount;
     
     private Integer paymentStatus;
+
+    @TableField(fill = FieldFill.INSERT)
+    Date createTime;
+
+    @TableField(fill = FieldFill.UPDATE)
+    Date updateTime;
+
+    public OrderInfo(Integer paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
 
 }

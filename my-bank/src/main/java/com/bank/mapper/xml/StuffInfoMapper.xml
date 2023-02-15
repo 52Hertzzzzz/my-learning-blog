@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bank.mapper.StuffInfoMapper">
+
+    <insert id="addStuffs" parameterType="java.util.List">
+        INSERT INTO stuff_info (stuff_id, name, price, amount, status, create_time)
+        VALUES
+        <foreach item="item" collection="list" separator=",">
+            (#{item.stuffId}, #{item.name}, #{item.price}, #{item.amount}, #{item.status}, #{item.createTime})
+        </foreach>
+    </insert>
+
+    <select id="getStuffAmount" parameterType="com.bank.entity.OrderInfo" resultType="java.lang.Long">
+        SELECT amount from stuff_info WHERE stuff_id = #{stuffId} AND status = 0 FOR UPDATE
+    </select>
+
+    <update id="updateStuffAmount">
+        UPDATE stuff_info SET amount = #{stuffAmount} WHERE stuff_id = #{stuffId}
+    </update>
+
 </mapper>

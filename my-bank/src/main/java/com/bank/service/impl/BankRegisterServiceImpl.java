@@ -99,8 +99,8 @@ public class BankRegisterServiceImpl extends ServiceImpl<BankCardMapper, BankCar
             }
 
             //邮件通知客户
-            EMail eMail = new EMail("425633796@qq.com", "Hello, World", "<h1>Hello, World</h1>");
-            rabbitTemplate.convertAndSend("my.order", "order.email", eMail);
+            //EMail eMail = new EMail("425633796@qq.com", "Hello, World", "<h1>Hello, World</h1>");
+            //rabbitTemplate.convertAndSend("my.order", "order.email", eMail);
             //MailUtils.sendMail("425633796@qq.com", "Hello, World", "<h1>Hello, World</h1>", true);
             //rabbitTemplate.convertAndSend();
 

@@ -1,12 +1,17 @@
 package com.bank.entity;
 
 
-import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.util.Date;
+
 /**
  * (StuffInfo)表实体类
  *
@@ -18,7 +23,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("stuff_info")
-public class StuffInfo  {
+public class StuffInfo {
 
     @TableId
     private Long id;
@@ -30,7 +35,13 @@ public class StuffInfo  {
     private Double price;
     
     private Long amount;
-    
-    private Integer status;
+
+    private Integer status = 0;
+
+    @TableField(fill = FieldFill.INSERT)
+    Date createTime;
+
+    @TableField(fill = FieldFill.UPDATE)
+    Date updateTime;
 
 }
