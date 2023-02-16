@@ -34,7 +34,7 @@ public class StuffInfo {
     
     private Double price;
     
-    private Long amount;
+    private Long stuffCount;
 
     private Integer status = 0;
 

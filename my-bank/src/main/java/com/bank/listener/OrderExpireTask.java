@@ -1,5 +1,6 @@
 package com.bank.listener;
 
+import com.bank.entity.OrderInfo;
 import lombok.Data;
 
 import java.util.concurrent.Delayed;
@@ -18,13 +19,18 @@ public class OrderExpireTask implements Delayed {
     private long excuteTime;
 
     /**
-     * 订单号
+     * 订单信息
      */
-    private String orderNum;
+    private OrderInfo orderInfo;
 
-    public OrderExpireTask(String orderNum, long delayTime) {
+    ///**
+    // * 订单号
+    // */
+    //private String orderNum;
+
+    public OrderExpireTask(OrderInfo orderInfo, long delayTime) {
         this.excuteTime = System.nanoTime() + delayTime;
-        this.orderNum = orderNum;
+        this.orderInfo = orderInfo;
     }
 
     /***

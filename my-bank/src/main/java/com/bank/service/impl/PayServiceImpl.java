@@ -42,7 +42,7 @@ public class PayServiceImpl implements PayService {
         //lt 小于 le 小于等于
         //gt 大于 ge 大于等于
         wrapper.eq(StuffInfo::getStatus, 0);
-        wrapper.gt(StuffInfo::getAmount, 0);
+        wrapper.gt(StuffInfo::getStuffCount, 0);
         if (!Strings.isNullOrEmpty(stuffName)) {
             wrapper.like(StuffInfo::getName, stuffName);
         }
@@ -65,14 +65,10 @@ public class PayServiceImpl implements PayService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result<?> addOrder(OrderInfo orderInfo) {
-        //LambdaQueryWrapper<StuffInfo> wrapper = new LambdaQueryWrapper<>();
-        //wrapper.eq(StuffInfo::getStuffId, orderInfo.getStuffId())
-        //        .eq(StuffInfo::getStatus, 0);
-        //StuffInfo stuffInfo = stuffInfoMapper.selectOne(wrapper);
 
         //查询库存需要使用排他锁，否则会并发超卖
         String stuffId = orderInfo.getStuffId();
-        Long stuffAmount = stuffInfoMapper.getStuffAmount(stuffId);
+        Long stuffAmount = stuffInfoMapper.getStuffCount(stuffId);
         if (Objects.isNull(stuffAmount)) {
             return Result.error("物品不存在");
         }
@@ -86,11 +82,11 @@ public class PayServiceImpl implements PayService {
         orderInfo.setOrderId(orderId);
         orderInfo.setPaymentStatus(0);
         int insert = orderInfoMapper.insert(orderInfo);
-        orderExpireListener.offerTask(orderId);
+        orderExpireListener.offerTask(orderInfo);
 
         //减库存
         stuffAmount -= orderInfo.getStuffCount();
-        int update = stuffInfoMapper.updateStuffAmount(stuffId, stuffAmount);
+        int update = stuffInfoMapper.updateStuffCount(stuffId, stuffAmount);
 
         return Result.ok("下单成功，请尽快支付");
     }

@@ -18,8 +18,10 @@ public interface StuffInfoMapper extends BaseMapper<StuffInfo> {
 
     int addStuffs(List<StuffInfo> stuffsList);
 
-    Long getStuffAmount(String stuffId);
+    Long getStuffCount(String stuffId);
 
-    int updateStuffAmount(@Param("stuffId") String stuffId, @Param("stuffAmount") Long stuffAmount);
+    int updateStuffCount(@Param("stuffId") String stuffId, @Param("stuffCount") Long stuffCount);
+
+    int returnStuff(@Param("stuffId") String stuffId, @Param("stuffCount") Integer stuffCount);
 
 }

@@ -2,6 +2,7 @@ package com.bank.listener;
 
 import com.bank.entity.OrderInfo;
 import com.bank.mapper.OrderInfoMapper;
+import com.bank.mapper.StuffInfoMapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.framework.entity.EMail;
 import org.slf4j.Logger;
@@ -34,6 +35,9 @@ public class OrderExpireListener {
     private OrderInfoMapper orderInfoMapper;
 
     @Autowired
+    private StuffInfoMapper stuffInfoMapper;
+
+    @Autowired
     private RabbitTemplate rabbitTemplate;
 
     /**
@@ -52,9 +56,9 @@ public class OrderExpireListener {
         }
     }
 
-    public void offerTask(String orderNum) {
+    public void offerTask(OrderInfo orderInfo) {
         long timeout = TimeUnit.NANOSECONDS.convert(DELAYSECONDS, TimeUnit.SECONDS);
-        this.orderExpireTasks.offer(new OrderExpireTask(orderNum, timeout));
+        this.orderExpireTasks.offer(new OrderExpireTask(orderInfo, timeout));
         System.out.println("OrderExpireTasks Size Now: " + orderExpireTasks.size());
     }
 
@@ -63,15 +67,20 @@ public class OrderExpireListener {
             try {
                 OrderExpireTask task = orderExpireTasks.take();
                 if (Objects.nonNull(task)) {
+                    OrderInfo orderInfo = task.getOrderInfo();
                     LambdaUpdateWrapper<OrderInfo> wrapper = new LambdaUpdateWrapper<>();
-                    wrapper.eq(OrderInfo::getOrderId, task.getOrderNum());
+                    wrapper.eq(OrderInfo::getOrderId, orderInfo.getOrderId());
                     wrapper.eq(OrderInfo::getPaymentStatus, 0);
                     //只更新指定字段，直接用wrapper的set方法
                     //更新多个字段，new一个实体类传入Update方法
-                    wrapper.set(OrderInfo::getPaymentStatus, 1);
+                    wrapper.set(OrderInfo::getPaymentStatus, 2);
                     int update = orderInfoMapper.update(null, wrapper);
                     if (update > 0) {
-                        log.info("超时订单 {} 已取消，通知用户", task.getOrderNum());
+                        log.info("超时订单 {} 已取消，通知用户", orderInfo.getOrderId());
+
+                        //Todo:归还库存逻辑
+                        int returnStuff =stuffInfoMapper.returnStuff(orderInfo.getStuffId(), orderInfo.getStuffCount());
+
                         EMail eMail = new EMail();
                         eMail.setAddress("425633796@qq.com");
                         eMail.setSubject("Your order has been canceled.");
