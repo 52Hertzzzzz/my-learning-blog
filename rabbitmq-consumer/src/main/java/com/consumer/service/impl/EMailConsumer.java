@@ -23,26 +23,37 @@ public class EMailConsumer {
 
     private static AtomicInteger atomicInteger = new AtomicInteger(0);
 
-    Logger logger = LoggerFactory.getLogger(PayConsumer.class);
+    Logger logger = LoggerFactory.getLogger(EMailConsumer.class);
 
     @RabbitHandler
     public void listenTopicQueue1(Channel channel, Message message, EMail eMail) {
         logger.info("Queue:order.email master get: {}", eMail.toString());
         long deliveryTag = message.getMessageProperties().getDeliveryTag();
-        atomicInteger.getAndIncrement();
+        //atomicInteger.getAndIncrement();
         try {
-            //if (atomicInteger.get() % 2 == 0) {
-            //    throw new RuntimeException();
-            //}
-            MailUtils.sendMail(eMail.getAddress(), eMail.getSubject(), eMail.getContent(), true);
-            channel.basicAck(deliveryTag, false);
-        } catch (Exception e) {
-            e.printStackTrace();
-            try {
-                channel.basicNack(deliveryTag, false, false);
-            } catch (IOException ex) {
-                ex.printStackTrace();
+
+            //手动触发报错
+            if (atomicInteger.get() == 0) {
+                log.error("该报错了哈");
+                throw new RuntimeException();
             }
+
+            MailUtils.sendMail(eMail.getAddress(), eMail.getSubject(), eMail.getContent(), true);
+            //channel.basicAck(deliveryTag, false);
+        } catch (Exception e) {
+            log.error("已经报错了哈");
+
+            //try {
+            //    //需要Nack才能进入死信队列
+            //    log.info("我Nack一下吧");
+            //    channel.basicNack(deliveryTag, false, false);
+            //    log.info("我Nack完了");
+            //} catch (Exception ex) {
+            //    log.info("我Nack失败了");
+            //    log.error(ex.getMessage());
+            //}
+
+            throw new RuntimeException();
         }
     }
 

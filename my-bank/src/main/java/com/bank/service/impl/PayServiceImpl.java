@@ -13,6 +13,8 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.framework.utils.Result;
 import org.assertj.core.util.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,8 @@ import java.util.Objects;
 
 @Service
 public class PayServiceImpl implements PayService {
+
+    Logger log = LoggerFactory.getLogger(PayServiceImpl.class);
 
     @Autowired
     private StuffInfoMapper stuffInfoMapper;
@@ -70,10 +74,12 @@ public class PayServiceImpl implements PayService {
         String stuffId = orderInfo.getStuffId();
         Long stuffAmount = stuffInfoMapper.getStuffCount(stuffId);
         if (Objects.isNull(stuffAmount)) {
+            log.error("物品不存在");
             return Result.error("物品不存在");
         }
 
         if (stuffAmount < orderInfo.getStuffCount()) {
+            log.error("库存不足，请重新下单");
             return Result.error("库存不足，请重新下单");
         }
 

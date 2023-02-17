@@ -21,11 +21,11 @@ public class OrderExpireListener {
 
     Logger log = LoggerFactory.getLogger(OrderExpireListener.class);
 
-    private static final int WORKERNUM = 3;
+    private static final int THREAD_NUM = 3;
 
-    private static final int DELAYSECONDS = 30;
+    private static final int DELAY_SECONDS = 3;
 
-    private Thread[] threads = new Thread[WORKERNUM];
+    private Thread[] threads = new Thread[THREAD_NUM];
 
     //private Thread[] threads;
 
@@ -45,8 +45,7 @@ public class OrderExpireListener {
      */
     @PostConstruct
     public void init() {
-        //threads = new Thread[WORKERNUM];
-        for (int i = 0; i < WORKERNUM; i++) {
+        for (int i = 0; i < THREAD_NUM; i++) {
             threads[i] = new Thread(() -> {
                 execute();
             });
@@ -57,7 +56,7 @@ public class OrderExpireListener {
     }
 
     public void offerTask(OrderInfo orderInfo) {
-        long timeout = TimeUnit.NANOSECONDS.convert(DELAYSECONDS, TimeUnit.SECONDS);
+        long timeout = TimeUnit.NANOSECONDS.convert(DELAY_SECONDS, TimeUnit.SECONDS);
         this.orderExpireTasks.offer(new OrderExpireTask(orderInfo, timeout));
         System.out.println("OrderExpireTasks Size Now: " + orderExpireTasks.size());
     }
@@ -79,7 +78,7 @@ public class OrderExpireListener {
                         log.info("超时订单 {} 已取消，通知用户", orderInfo.getOrderId());
 
                         //Todo:归还库存逻辑
-                        int returnStuff =stuffInfoMapper.returnStuff(orderInfo.getStuffId(), orderInfo.getStuffCount());
+                        int returnStuff = stuffInfoMapper.returnStuff(orderInfo.getStuffId(), orderInfo.getStuffCount());
 
                         EMail eMail = new EMail();
                         eMail.setAddress("425633796@qq.com");

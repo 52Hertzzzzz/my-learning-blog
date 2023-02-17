@@ -92,6 +92,10 @@ spring:
     username: 52hz
     password: 200058
     virtual-host: /
+    publisher-confirm-type: correlated  #生产者 -> 交换机消息回调
+    publisher-returns: true  #交换机 -> 队列消息回调
+    template:
+      mandatory: true  #发送失败强制回退生产者
 
 mybatis-plus:
   configuration:

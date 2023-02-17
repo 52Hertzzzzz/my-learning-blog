@@ -64,4 +64,14 @@ spring:
     virtual-host: /
     listener:
       simple:
-        acknowledge-mode: manual
+        acknowledge-mode: auto
+        default-requeue-rejected: false
+        prefetch: 3
+        concurrency: 1  #每个队列启动的消费者数量
+        max-concurrency: 1  #每个队列最大的消费者数量
+        #        重试配置
+        retry:
+          enabled: true
+          max-attempts: 3  #重试次数
+          initial-interval: 3000  #间隔时间, ms
+          max-interval: 5000  #重试最大间隔时间, ms
