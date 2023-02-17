@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EMail {
+public class EMail extends MessageBasicEntity {
 
     String address;
 

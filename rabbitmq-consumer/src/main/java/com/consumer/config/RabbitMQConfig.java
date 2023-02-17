@@ -68,15 +68,4 @@
 //                .with("#");
 //    }
 //
-//    //绑定死信队列
-//    //@Bean
-//    //public Queue deadLetterBinding2() {
-//    //    HashMap<String, Object> params = Maps.newHashMapWithExpectedSize(2);
-//    //    //声明当前队列绑定的死信交换机
-//    //    params.put("x-dead-letter-exchange", eMailDeadLetterExchange);
-//    //    //声明当前队列的死信路由键
-//    //    params.put("x-dead-letter-routing-key", eMailDeadLetterRoutingKey);
-//    //    return QueueBuilder.durable(eMailDeadLetterQueue).withArguments(params).build();
-//    //}
-//
 //}

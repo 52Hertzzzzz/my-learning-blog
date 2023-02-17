@@ -2,18 +2,22 @@ package com.consumer.service.impl;
 
 import com.framework.entity.EMail;
 import com.framework.utils.MailUtils;
+import com.framework.utils.RedisCache;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -21,12 +25,19 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RabbitListener(queues = "order.email")
 public class EMailConsumer {
 
-    private static AtomicInteger atomicInteger = new AtomicInteger(0);
-
     Logger logger = LoggerFactory.getLogger(EMailConsumer.class);
 
+    private static AtomicInteger atomicInteger = new AtomicInteger(0);
+
+    private static final String RETRY_EXECUTE_TIMES_KEY = "retryExecuteTimes";
+
+    private static final Integer RETRY_EXECUTE_TIMES_MAX = 3;
+
+    @Autowired
+    private RedisCache redisCache;
+
     @RabbitHandler
-    public void listenTopicQueue1(Channel channel, Message message, EMail eMail) {
+    public void listenTopicQueue1(Channel channel, Message message, EMail eMail, @Headers Map<String, Object> headers) {
         logger.info("Queue:order.email master get: {}", eMail.toString());
         long deliveryTag = message.getMessageProperties().getDeliveryTag();
         //atomicInteger.getAndIncrement();
@@ -39,22 +50,42 @@ public class EMailConsumer {
             }
 
             MailUtils.sendMail(eMail.getAddress(), eMail.getSubject(), eMail.getContent(), true);
-            //channel.basicAck(deliveryTag, false);
+            channel.basicAck(deliveryTag, false);
         } catch (Exception e) {
             log.error("已经报错了哈");
 
-            //try {
-            //    //需要Nack才能进入死信队列
-            //    log.info("我Nack一下吧");
-            //    channel.basicNack(deliveryTag, false, false);
-            //    log.info("我Nack完了");
-            //} catch (Exception ex) {
-            //    log.info("我Nack失败了");
-            //    log.error(ex.getMessage());
-            //}
+            //手动实现重试
+            try {
+                retryExecute(channel, deliveryTag, eMail.getMessageId());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
 
-            throw new RuntimeException();
+            //手动Nack与retry自动放入死信队列互斥，最好只使用一个，使用其他方法实现重试
+            //throw new RuntimeException();
         }
+    }
+
+    //利用Redis手动实现重试机制
+    private void retryExecute(Channel channel, long deliveryTag, String messageId) throws IOException {
+        String redisKey = RETRY_EXECUTE_TIMES_KEY.concat(":").concat(messageId);
+        Object value = redisCache.getCacheObject(redisKey);
+        if (Objects.isNull(value)){
+            //当前为第一次执行，返回重试
+            redisCache.setCacheObject(redisKey, 2, 60 * 5, TimeUnit.SECONDS);
+            channel.basicNack(deliveryTag, false, true);
+        } else {
+            Integer integer = Integer.parseInt(value.toString());
+            if (integer < RETRY_EXECUTE_TIMES_MAX) {
+                //当前为第二次执行，返回重试
+                redisCache.setCacheObject(redisKey, integer + 1, 60 * 5, TimeUnit.SECONDS);
+                channel.basicNack(deliveryTag, false, true);
+            } else {
+                log.error("3次了，不试了，扔死信队列了");
+                channel.basicNack(deliveryTag, false, false);
+            }
+        }
+
     }
 
     //Signal:不允许出现一个Listener下两个消费方法，否则会报错
