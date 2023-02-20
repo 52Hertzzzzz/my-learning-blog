@@ -9,7 +9,7 @@ import com.blog.entity.Category;
 import com.blog.mapper.ArticleMapper;
 import com.blog.service.ArticleService;
 import com.blog.service.CategoryService;
-import com.framework.utils.RedisCache;
+import com.framework.utils.RedisUtil;
 import com.blog.vo.ArticleDetailVo;
 import com.blog.vo.ArticleListVo;
 import com.blog.vo.HotArticleVo;
@@ -30,7 +30,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     private CategoryService categoryService;
 
     @Autowired
-    private RedisCache redisCache;
+    private RedisUtil RedisUtil;
 
     @Override
     public List<HotArticleVo> hotArticle() {
@@ -52,7 +52,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         List<HotArticleVo> hotArticleVos = new ArrayList<>();
         for (Article record : records) {
             //从redis中查询最新浏览量
-            Integer viewCount = redisCache.getCacheMapValue("viewCount", record.getId().toString());
+            Integer viewCount = Integer.valueOf(RedisUtil.hget("viewCount", record.getId().toString()).toString());
             record.setViewCount(Long.valueOf(viewCount));
 
             HotArticleVo hotArticleVo = new HotArticleVo();
@@ -94,7 +94,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         List<ArticleListVo> listVos = new ArrayList<>();
         for (Article record : page.getRecords()) {
             //从redis中查询最新浏览量
-            Integer viewCount = redisCache.getCacheMapValue("viewCount", record.getId().toString());
+            Integer viewCount = Integer.valueOf(RedisUtil.hget("viewCount", record.getId().toString()).toString());
             record.setViewCount(Long.valueOf(viewCount));
 
             ArticleListVo articleListVo = new ArticleListVo();
@@ -111,7 +111,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         //根据id查询文章
         Article article = getById(id);
         //从redis中查询最新浏览量
-        Integer viewCount = redisCache.getCacheMapValue("viewCount", id.toString());
+        Integer viewCount = Integer.valueOf(RedisUtil.hget("viewCount", id.toString()).toString());
         article.setViewCount(Long.valueOf(viewCount));
 
         ArticleDetailVo articleDetailVo = new ArticleDetailVo();
@@ -129,6 +129,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public void updateViewCount(Long id) {
         //更新redis中对应文章的浏览量
-        redisCache.incrementCacheMapValue("viewCount", id.toString(), 1);
+        RedisUtil.hincr("viewCount", id.toString(), 1);
     }
+
 }

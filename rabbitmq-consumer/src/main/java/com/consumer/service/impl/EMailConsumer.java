@@ -2,7 +2,7 @@ package com.consumer.service.impl;
 
 import com.framework.entity.EMail;
 import com.framework.utils.MailUtils;
-import com.framework.utils.RedisCache;
+import com.framework.utils.RedisUtil;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -34,7 +34,7 @@ public class EMailConsumer {
     private static final Integer RETRY_EXECUTE_TIMES_MAX = 3;
 
     @Autowired
-    private RedisCache redisCache;
+    private RedisUtil RedisUtil;
 
     @RabbitHandler
     public void listenTopicQueue1(Channel channel, Message message, EMail eMail, @Headers Map<String, Object> headers) {
@@ -69,16 +69,16 @@ public class EMailConsumer {
     //利用Redis手动实现重试机制
     private void retryExecute(Channel channel, long deliveryTag, String messageId) throws IOException {
         String redisKey = RETRY_EXECUTE_TIMES_KEY.concat(":").concat(messageId);
-        Object value = redisCache.getCacheObject(redisKey);
+        Object value = RedisUtil.get(redisKey);
         if (Objects.isNull(value)){
             //当前为第一次执行，返回重试
-            redisCache.setCacheObject(redisKey, 2, 60 * 5, TimeUnit.SECONDS);
+            RedisUtil.set(redisKey, 2, 60 * 5);
             channel.basicNack(deliveryTag, false, true);
         } else {
             Integer integer = Integer.parseInt(value.toString());
             if (integer < RETRY_EXECUTE_TIMES_MAX) {
                 //当前为第二次执行，返回重试
-                redisCache.setCacheObject(redisKey, integer + 1, 60 * 5, TimeUnit.SECONDS);
+                RedisUtil.set(redisKey, integer + 1, 60 * 5);
                 channel.basicNack(deliveryTag, false, true);
             } else {
                 log.error("3次了，不试了，扔死信队列了");

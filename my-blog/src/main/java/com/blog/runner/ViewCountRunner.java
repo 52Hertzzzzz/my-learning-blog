@@ -2,7 +2,7 @@ package com.blog.runner;
 
 import com.blog.entity.Article;
 import com.blog.mapper.ArticleMapper;
-import com.framework.utils.RedisCache;
+import com.framework.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -23,7 +23,7 @@ public class ViewCountRunner implements CommandLineRunner {
     private ArticleMapper articleMapper;
 
     @Autowired
-    private RedisCache redisCache;
+    private RedisUtil RedisUtil;
 
     @Override
     public void run(String... args) throws Exception {
@@ -43,7 +43,7 @@ public class ViewCountRunner implements CommandLineRunner {
                 }));
 
         //存储到redis中
-        redisCache.setCacheMap("viewCount", viewCountMap);
+        RedisUtil.hmset("viewCount", ((Map<String, Object>) ((Object) viewCountMap)));
 
 
     }
