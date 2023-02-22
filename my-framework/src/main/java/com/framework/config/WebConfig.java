@@ -5,6 +5,8 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.serializer.ToStringSerializer;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.framework.interceptor.WebInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -19,9 +21,15 @@ import java.util.List;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+    @Autowired
+    private WebInterceptor webInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-
+        //支付相关接口需要用拦截器做幂等校验
+        //先仅用用户名进行下单限制，10s内只能下单一次
+        registry.addInterceptor(webInterceptor)
+                .addPathPatterns("/pay/addOrder");
     }
 
     //处理前端跨域问题

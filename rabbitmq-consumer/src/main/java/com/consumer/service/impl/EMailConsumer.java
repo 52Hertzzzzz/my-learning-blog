@@ -1,13 +1,19 @@
 package com.consumer.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.nacos.common.utils.ByteUtils;
 import com.framework.entity.EMail;
 import com.framework.utils.MailUtils;
 import com.framework.utils.RedisUtil;
+import com.google.common.primitives.Bytes;
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.BasicProperties;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +62,7 @@ public class EMailConsumer {
 
             //手动实现重试
             try {
-                retryExecute(channel, deliveryTag, eMail.getMessageId());
+                retryExecute(channel, message, eMail, headers);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -67,24 +73,37 @@ public class EMailConsumer {
     }
 
     //利用Redis手动实现重试机制
-    private void retryExecute(Channel channel, long deliveryTag, String messageId) throws IOException {
-        String redisKey = RETRY_EXECUTE_TIMES_KEY.concat(":").concat(messageId);
+    private void retryExecute(Channel channel, Message message, EMail eMail, Map<String, Object> headers) throws IOException {
+        MessageProperties messageProperties = message.getMessageProperties();
+        String redisKey = RETRY_EXECUTE_TIMES_KEY.concat(":").concat(eMail.getMessageId());
         Object value = RedisUtil.get(redisKey);
         if (Objects.isNull(value)){
             //当前为第一次执行，返回重试
             RedisUtil.set(redisKey, 2, 60 * 5);
-            channel.basicNack(deliveryTag, false, true);
+            channel.basicNack(messageProperties.getDeliveryTag(), false, true);
         } else {
             Integer integer = Integer.parseInt(value.toString());
             if (integer < RETRY_EXECUTE_TIMES_MAX) {
                 //当前为第二次执行，返回重试
                 RedisUtil.set(redisKey, integer + 1, 60 * 5);
-                channel.basicNack(deliveryTag, false, true);
+                channel.basicNack(messageProperties.getDeliveryTag(), false, true);
             } else {
                 log.error("3次了，不试了，扔死信队列了");
-                channel.basicNack(deliveryTag, false, false);
+                channel.basicNack(messageProperties.getDeliveryTag(), false, false);
             }
         }
+
+        //手动重试实现2:将消息发布到队列尾，当前实现为放到队列头
+        //需要注意超时时间，如果队列中消息较多，消费到该消息时redis记录可能已经过期，需要根据情况延长过期时间
+        //try {
+        //    AMQP.BasicProperties properties = new AMQP.BasicProperties.Builder().contentType("application/json").headers(headers).build();
+        //    channel.basicPublish(message.getMessageProperties().getReceivedExchange(),
+        //            message.getMessageProperties().getReceivedRoutingKey(),
+        //            properties,
+        //            ByteUtils.toBytes(eMail));
+        //} catch (IOException ex) {
+        //    ex.printStackTrace();
+        //}
 
     }
 

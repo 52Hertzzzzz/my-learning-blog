@@ -3,10 +3,13 @@ package com.framework.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisStringCommands;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
+import org.springframework.data.redis.core.types.Expiration;
 import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -1013,5 +1016,26 @@ public class RedisUtil {
         return redisTemplate.opsForValue().getBit(key, offset);
     }
 
+    /***
+     * setNx 如果不存在则设置，返回true；
+     * 如果存在则不设置，返回false
+     * @param key
+     * @param value
+     * @param expires
+     * @param timeUnit
+     * @return
+     */
+    public boolean setNx(String key, String value, long expires, TimeUnit timeUnit) {
+        boolean flag = false;
+        try {
+            flag = (boolean) redisTemplate.execute((RedisCallback<Boolean>) connection -> connection.set(key.getBytes(),
+                    value.getBytes(),
+                    Expiration.from(expires, timeUnit),
+                    RedisStringCommands.SetOption.ifAbsent()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return flag;
+    }
 
 }
