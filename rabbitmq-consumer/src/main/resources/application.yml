@@ -75,3 +75,4 @@ spring:
 #          max-attempts: 3  #重试次数
 #          initial-interval: 3000  #间隔时间, ms
 #          max-interval: 5000  #重试最大间隔时间, ms
+#          multiplier: 1

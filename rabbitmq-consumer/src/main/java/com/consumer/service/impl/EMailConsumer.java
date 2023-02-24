@@ -23,15 +23,12 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @Slf4j
 @RabbitListener(queues = "order.email")
 public class EMailConsumer {
-
-    Logger logger = LoggerFactory.getLogger(EMailConsumer.class);
 
     private static AtomicInteger atomicInteger = new AtomicInteger(0);
 
@@ -44,7 +41,7 @@ public class EMailConsumer {
 
     @RabbitHandler
     public void listenTopicQueue1(Channel channel, Message message, EMail eMail, @Headers Map<String, Object> headers) {
-        logger.info("Queue:order.email master get: {}", eMail.toString());
+        log.info("Queue:order.email master get: {}", eMail.toString());
         long deliveryTag = message.getMessageProperties().getDeliveryTag();
         //atomicInteger.getAndIncrement();
         try {

@@ -56,7 +56,7 @@ public class PayServiceImpl implements PayService {
     }
 
     @Override
-    //@Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public Integer addStuffs(List<StuffInfo> stuffsList) {
         //stuffInfoMapper.insert(new StuffInfo(10L, IdWorker.get32UUID(), "我试试事务", 1.11, 10L, 0));
         stuffsList.stream().forEach(entity -> entity.setStuffId(IdWorker.get32UUID()));
