@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.consumer.mapper.SeckillStuffInfoMapper">
+
+    <update id="decreaseStuffCount">
+        UPDATE seckill_stuff_info SET stuff_count = stuff_count - 1
+        WHERE stuff_id = #{stuffId,jdbcType=VARCHAR}
+    </update>
+
+</mapper>

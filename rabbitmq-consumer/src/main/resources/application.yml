@@ -66,7 +66,7 @@ spring:
       simple:
         acknowledge-mode: manual
         default-requeue-rejected: false
-        prefetch: 3
+        prefetch: 5
         concurrency: 1  #每个队列启动的消费者数量
         max-concurrency: 1  #每个队列最大的消费者数量
         #        重试配置
@@ -76,3 +76,21 @@ spring:
 #          initial-interval: 3000  #间隔时间, ms
 #          max-interval: 5000  #重试最大间隔时间, ms
 #          multiplier: 1
+
+mybatis-plus:
+  configuration:
+    #打印日志信息
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #关闭驼峰映射
+  #    map-underscore-to-camel-case: false
+  global-config:
+    db-config:
+      #逻辑删除字段名
+      logic-delete-field: delFlag
+      #1代表已删除
+      logic-delete-value: 1
+      #0代表未删除
+      logic-not-delete-value: 0
+      #主键自增策略
+      id-type: auto
+  mapper-locations: classpath*:com/consumer/mapper/xml/*.xml

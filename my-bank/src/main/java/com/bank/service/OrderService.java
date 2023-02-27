@@ -8,7 +8,7 @@ import com.framework.utils.Result;
 
 import java.util.List;
 
-public interface PayService {
+public interface OrderService {
 
     IPage<StuffInfo> listStuffs(Page<StuffInfo> page, String stuffName);
 

@@ -6,7 +6,7 @@ import com.bank.listener.OrderExpireListener;
 import com.bank.mapper.BankCardMapper;
 import com.bank.mapper.OrderInfoMapper;
 import com.bank.mapper.StuffInfoMapper;
-import com.bank.service.PayService;
+import com.bank.service.OrderService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class PayServiceImpl implements PayService {
+public class OrderServiceImpl implements OrderService {
 
-    Logger log = LoggerFactory.getLogger(PayServiceImpl.class);
+    Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     @Autowired
     private StuffInfoMapper stuffInfoMapper;
@@ -86,7 +86,9 @@ public class PayServiceImpl implements PayService {
         //下订单
         String orderId = IdWorker.get32UUID();
         orderInfo.setOrderId(orderId);
-        orderInfo.setPaymentStatus(0);
+        if (Objects.isNull(orderInfo.getPaymentStatus())) {
+            orderInfo.setPaymentStatus(0);
+        }
         int insert = orderInfoMapper.insert(orderInfo);
         orderExpireListener.offerTask(orderInfo);
 

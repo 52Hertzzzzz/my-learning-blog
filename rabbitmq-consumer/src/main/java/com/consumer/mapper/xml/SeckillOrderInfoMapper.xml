@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.consumer.mapper.SeckillOrderInfoMapper">
+
+    <insert id="insertSeckillOrderInfo" parameterType="com.framework.entity.SeckillOrderInfo">
+        INSERT INTO seckill_order_info (order_id, username, stuff_id, money_amount, payment_status, create_time, update_time)
+        VALUES (#{orderId,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{stuffId,jdbcType=VARCHAR},
+                #{moneyAmount,jdbcType=DECIMAL}, #{paymentStatus,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+                #{updateTime,jdbcType=TIMESTAMP}
+                )
+    </insert>
+
+</mapper>

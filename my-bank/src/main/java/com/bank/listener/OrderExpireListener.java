@@ -75,9 +75,9 @@ public class OrderExpireListener {
                     wrapper.set(OrderInfo::getPaymentStatus, 2);
                     int update = orderInfoMapper.update(null, wrapper);
                     if (update > 0) {
-                        log.info("超时订单 {} 已取消，通知用户", orderInfo.getOrderId());
+                        log.info("超时订单: {} 已取消，通知用户", orderInfo.getOrderId());
 
-                        //Todo:归还库存逻辑
+                        //New:归还库存逻辑
                         int returnStuff = stuffInfoMapper.returnStuff(orderInfo.getStuffId(), orderInfo.getStuffCount());
 
                         EMail eMail = new EMail();
@@ -86,20 +86,8 @@ public class OrderExpireListener {
                         eMail.setContent("<h1>Your order has been canceled.</h1><br/><h2>:(</h2>");
                         rabbitTemplate.convertAndSend("my.order", "order.email", eMail);
                     } else {
-                        log.info("订单 {} 已支付");
+                        log.info("订单: {} 已支付", task.getOrderInfo().getOrderId());
                     }
-
-                    //LambdaQueryWrapper<OrderInfo> wrapper = new LambdaQueryWrapper();
-                    //wrapper.eq(OrderInfo::getOrderNum, task.getOrderNum());
-                    //wrapper.eq(OrderInfo::getPaymentStatus, 0);
-                    //OrderInfo orderInfo = orderInfoMapper.selectOne(wrapper);
-                    //if (Objects.nonNull(orderInfo)) {
-                    //    UpdateWrapper<OrderInfo> wrapper1 = new UpdateWrapper<>();
-                    //    wrapper.eq(OrderInfo::getOrderNum, task.getOrderNum());
-                    //    wrapper.eq(OrderInfo::getPaymentStatus, 0);
-                    //    int update = orderInfoMapper.update();
-                    //}
-                    //orderInfoMapper.selectOne();
                 }
             } catch (Exception e) {
                 e.printStackTrace();

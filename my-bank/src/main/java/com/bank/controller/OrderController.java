@@ -2,7 +2,7 @@ package com.bank.controller;
 
 import com.bank.entity.OrderInfo;
 import com.bank.entity.StuffInfo;
-import com.bank.service.PayService;
+import com.bank.service.OrderService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.framework.utils.Result;
@@ -19,15 +19,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/pay")
-public class PayController {
+public class OrderController {
 
-    Logger log = LoggerFactory.getLogger(PayController.class);
+    Logger log = LoggerFactory.getLogger(OrderController.class);
 
     @Resource
     private Validator validator;
 
     @Autowired
-    private PayService payService;
+    private OrderService orderService;
 
     @GetMapping("/listStuffs")
     public Result<?> listStuffs(@RequestParam(required = false) String stuffName,
@@ -36,7 +36,7 @@ public class PayController {
         try {
             HashMap<String, Object> resultMap = Maps.newHashMapWithExpectedSize(2);
             Page<StuffInfo> page = new Page<>(currentPage, pageSize);
-            IPage<StuffInfo> result = payService.listStuffs(page, stuffName);
+            IPage<StuffInfo> result = orderService.listStuffs(page, stuffName);
 
             resultMap.put("total", result.getTotal());
             resultMap.put("records", result.getRecords());
@@ -49,7 +49,7 @@ public class PayController {
     @PostMapping("/addStuffs")
     public Result<?> addStuffs(@RequestBody List<StuffInfo> stuffsList) {
         try {
-            Integer num = payService.addStuffs(stuffsList);
+            Integer num = orderService.addStuffs(stuffsList);
 
             return Result.ok("加入商品成功");
         } catch (Exception e) {
@@ -61,7 +61,7 @@ public class PayController {
     @PostMapping("/addOrder")
     public Result<?> addOrder(@RequestBody OrderInfo orderInfo) {
         try {
-            Result<?> result = payService.addOrder(orderInfo);
+            Result<?> result = orderService.addOrder(orderInfo);
 
             return result;
         } catch (Exception e) {
