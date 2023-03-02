@@ -1,14 +1,13 @@
 package com.consumer.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.consumer.mapper.SeckillOrderInfoMapper;
 import com.consumer.mapper.SeckillStuffInfoMapper;
 import com.framework.entity.SeckillOrderInfo;
 import com.framework.entity.SeckillStuffInfo;
 import com.framework.utils.RedisUtil;
+import com.google.common.collect.Lists;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -21,7 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -34,6 +34,8 @@ public class SeckillConsumer extends AbstractConsumer {
     @Autowired
     private SeckillStuffInfoMapper seckillStuffInfoMapper;
 
+    private static final String lockKey = "RabbitMQLock:SeckillConsumer";
+
     @Autowired
     public SeckillConsumer(RedisUtil redisUtil) {
         super(redisUtil);
@@ -44,7 +46,12 @@ public class SeckillConsumer extends AbstractConsumer {
     public void listenTopicQueue1(Channel channel, Message message, SeckillOrderInfo seckillOrderInfo, @Headers Map<String, Object> headers) {
         log.info("Queue:order.seckill master get: {}", seckillOrderInfo.toString());
         long deliveryTag = message.getMessageProperties().getDeliveryTag();
+        String lockId = String.valueOf(Thread.currentThread().getId());
+
         try {
+            //New:新增分布式锁
+            Boolean lock = lock(lockKey, lockId, 3, TimeUnit.SECONDS);
+
             //下订单
             String orderId = IdWorker.get32UUID();
             seckillOrderInfo.setOrderId(orderId);
@@ -73,6 +80,11 @@ public class SeckillConsumer extends AbstractConsumer {
                 this.retryExecute(channel, message, seckillOrderInfo, headers);
             } catch (IOException ex) {
                 ex.printStackTrace();
+            }
+        } finally {
+            if (lockId.equals((String) redisUtil.get(lockKey))) {
+                //释放锁
+                redisUtil.del(lockKey);
             }
         }
     }

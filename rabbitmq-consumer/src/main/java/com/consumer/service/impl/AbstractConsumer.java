@@ -10,6 +10,7 @@ import org.springframework.amqp.core.MessageProperties;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public abstract class AbstractConsumer {
@@ -18,7 +19,7 @@ public abstract class AbstractConsumer {
 
     private static final Integer RETRY_EXECUTE_TIMES_MAX = 3;
 
-    private RedisUtil redisUtil;
+    public RedisUtil redisUtil;
 
     public AbstractConsumer(RedisUtil redisUtil) {
         this.redisUtil = redisUtil;
@@ -42,6 +43,17 @@ public abstract class AbstractConsumer {
             } else {
                 log.error("3次了，不试了，扔死信队列了");
                 channel.basicNack(messageProperties.getDeliveryTag(), false, false);
+            }
+        }
+    }
+
+    //公用分布式锁
+    public Boolean lock(String lockKey, String lockValue, long expires, TimeUnit timeUnit) {
+        while (true) {
+            boolean b = redisUtil.setNx(lockKey, lockValue, expires, timeUnit);
+            //获取到锁，开始执行
+            if (b) {
+                return true;
             }
         }
     }

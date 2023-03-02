@@ -30,7 +30,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     private CategoryService categoryService;
 
     @Autowired
-    private RedisUtil RedisUtil;
+    private RedisUtil redisUtil;
 
     @Override
     public List<HotArticleVo> hotArticle() {
@@ -52,7 +52,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         List<HotArticleVo> hotArticleVos = new ArrayList<>();
         for (Article record : records) {
             //从redis中查询最新浏览量
-            Integer viewCount = Integer.valueOf(RedisUtil.hget("viewCount", record.getId().toString()).toString());
+            Integer viewCount = Integer.valueOf(redisUtil.hget("viewCount", record.getId().toString()).toString());
             record.setViewCount(Long.valueOf(viewCount));
 
             HotArticleVo hotArticleVo = new HotArticleVo();
@@ -94,7 +94,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         List<ArticleListVo> listVos = new ArrayList<>();
         for (Article record : page.getRecords()) {
             //从redis中查询最新浏览量
-            Integer viewCount = Integer.valueOf(RedisUtil.hget("viewCount", record.getId().toString()).toString());
+            Integer viewCount = Integer.valueOf(redisUtil.hget("viewCount", record.getId().toString()).toString());
             record.setViewCount(Long.valueOf(viewCount));
 
             ArticleListVo articleListVo = new ArticleListVo();
@@ -111,7 +111,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         //根据id查询文章
         Article article = getById(id);
         //从redis中查询最新浏览量
-        Integer viewCount = Integer.valueOf(RedisUtil.hget("viewCount", id.toString()).toString());
+        Integer viewCount = Integer.valueOf(redisUtil.hget("viewCount", id.toString()).toString());
         article.setViewCount(Long.valueOf(viewCount));
 
         ArticleDetailVo articleDetailVo = new ArticleDetailVo();
@@ -129,7 +129,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public void updateViewCount(Long id) {
         //更新redis中对应文章的浏览量
-        RedisUtil.hincr("viewCount", id.toString(), 1);
+        redisUtil.hincr("viewCount", id.toString(), 1);
     }
 
 }

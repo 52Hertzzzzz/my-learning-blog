@@ -67,8 +67,8 @@ spring:
         acknowledge-mode: manual
         default-requeue-rejected: false
         prefetch: 5
-        concurrency: 1  #每个队列启动的消费者数量
-        max-concurrency: 1  #每个队列最大的消费者数量
+        concurrency: 3  #每个队列启动的消费者数量
+        max-concurrency: 5  #每个队列最大的消费者数量
         #        重试配置
 #        retry:
 #          enabled: true

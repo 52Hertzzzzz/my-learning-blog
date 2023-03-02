@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class UpdateViewCountJob {
 
     @Autowired
-    private RedisUtil RedisUtil;
+    private RedisUtil redisUtil;
 
     @Autowired
     private ArticleService articleService;
@@ -27,7 +27,7 @@ public class UpdateViewCountJob {
     public void updateViewCount(){
 
         //获取redis中的浏览量
-        Map<String, Integer> viewCountMap = (Map<String, Integer>) ((Object) RedisUtil.hmget("viewCount"));
+        Map<String, Integer> viewCountMap = (Map<String, Integer>) ((Object) redisUtil.hmget("viewCount"));
         List<Article> articles = viewCountMap.entrySet().stream()
                 .map(entry -> new Article(Long.valueOf(entry.getKey()),
                         entry.getValue().longValue()))

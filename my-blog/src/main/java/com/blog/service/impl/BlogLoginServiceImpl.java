@@ -27,7 +27,7 @@ public class BlogLoginServiceImpl implements BlogLoginService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private RedisUtil RedisUtil;
+    private RedisUtil redisUtil;
 
     //调用ProviderManager的方法进行认证，认证成功则生成jwt
     @Override
@@ -46,7 +46,7 @@ public class BlogLoginServiceImpl implements BlogLoginService {
         String userId = loginUser.getUser().getId().toString();
         String jwt = JwtUtil.createJWT(userId);
         //把用户信息存入redis
-        RedisUtil.set("bloglogin:" + userId, loginUser);
+        redisUtil.set("bloglogin:" + userId, loginUser);
         //把token和userInfo封装起来返回
         //先将User转成UserInfoVo
         UserInfoVo userInfoVo = new UserInfoVo();
@@ -63,7 +63,7 @@ public class BlogLoginServiceImpl implements BlogLoginService {
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         Long userId = loginUser.getUser().getId();
         //删除redis中的用户信息
-        RedisUtil.del("bloglogin:" + userId);
+        redisUtil.del("bloglogin:" + userId);
         return Result.ok();
     }
 }

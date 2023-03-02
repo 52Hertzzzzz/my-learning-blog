@@ -25,7 +25,7 @@ import java.util.Objects;
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Autowired
-    private RedisUtil RedisUtil;
+    private RedisUtil redisUtil;
 
     //认证过滤器实现
     @Override
@@ -53,7 +53,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
         String userId = claims.getSubject();
         //从redis中获取对应用户信息
-        LoginUser cacheObject = (LoginUser) RedisUtil.get("bloglogin:" + userId);
+        LoginUser cacheObject = (LoginUser) redisUtil.get("bloglogin:" + userId);
 
         if (Objects.isNull(cacheObject)){
             //未找到用户信息，说明登录过期

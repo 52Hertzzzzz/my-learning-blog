@@ -23,7 +23,7 @@ public class ViewCountRunner implements CommandLineRunner {
     private ArticleMapper articleMapper;
 
     @Autowired
-    private RedisUtil RedisUtil;
+    private RedisUtil redisUtil;
 
     @Override
     public void run(String... args) throws Exception {
@@ -43,8 +43,6 @@ public class ViewCountRunner implements CommandLineRunner {
                 }));
 
         //存储到redis中
-        RedisUtil.hmset("viewCount", ((Map<String, Object>) ((Object) viewCountMap)));
-
-
+        redisUtil.hmset("viewCount", ((Map<String, Object>) ((Object) viewCountMap)));
     }
 }
