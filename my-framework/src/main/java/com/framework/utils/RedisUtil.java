@@ -40,6 +40,10 @@ public class RedisUtil {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    public RedisTemplate getRedisTemplate() {
+        return redisTemplate;
+    }
+
     //=============================common============================
     /**
      * 指定缓存失效时间

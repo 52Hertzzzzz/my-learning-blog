@@ -82,10 +82,8 @@ public class SeckillConsumer extends AbstractConsumer {
                 ex.printStackTrace();
             }
         } finally {
-            if (lockId.equals((String) redisUtil.get(lockKey))) {
-                //释放锁
-                redisUtil.del(lockKey);
-            }
+            //释放锁
+            unlock(lockKey, lockId);
         }
     }
 

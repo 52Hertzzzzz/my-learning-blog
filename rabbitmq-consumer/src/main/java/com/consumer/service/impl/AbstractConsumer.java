@@ -58,4 +58,12 @@ public abstract class AbstractConsumer {
         }
     }
 
+    //公用释放锁
+    public void unlock(String lockKey, String lockValue) {
+        if (lockValue.equals((String) redisUtil.get(lockKey))) {
+            //释放锁
+            redisUtil.del(lockKey);
+        }
+    }
+
 }

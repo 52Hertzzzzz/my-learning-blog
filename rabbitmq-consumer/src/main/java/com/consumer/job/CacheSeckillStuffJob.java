@@ -34,7 +34,7 @@ public class CacheSeckillStuffJob {
 
         if (Objects.nonNull(list)) {
             list.stream()
-                .forEach(entity -> redisUtil.hset(redisKey, entity.getStuffId(), entity.getStuffCount().intValue()));
+                .forEach(entity -> redisUtil.hset(redisKey, entity.getStuffId(), entity.getStuffCount().intValue(), 3600 * 24));
         }
     }
 

@@ -76,8 +76,11 @@ spring:
   redis:
     #数据库索引
     database: 0
-    host: 192.168.190.129
-    port: 6379
+    cluster:
+      nodes: redis://192.168.190.129:6379, redis://127.0.0.1:6379
+      max-redirects: 1
+    #    host: 192.168.190.129
+#    port: 6379
     password: ""
     timeout: 0
     #redis连接池配置
