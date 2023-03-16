@@ -3,6 +3,7 @@ package com.bank.controller;
 import com.bank.entity.OrderInfo;
 import com.bank.entity.StuffInfo;
 import com.bank.service.OrderService;
+import com.bank.vo.OrderInfoResponseVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.framework.utils.Result;
@@ -83,9 +84,16 @@ public class OrderController {
         }
     }
 
-    @PostMapping("/listOrders")
-    public Result<?> listOrders() {
-        return null;
+    @GetMapping("/listOrders")
+    public Result<?> listOrders(@RequestParam(value = "userName") String userName) {
+        List<OrderInfoResponseVo> res = null;
+        try {
+            res = orderService.listOrders(userName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error("查询异常");
+        }
+        return Result.ok(res);
     }
 
     @GetMapping("/queryOrderDetail")

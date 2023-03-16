@@ -1,6 +1,5 @@
 package com.bank.controller;
 
-import com.bank.entity.StuffInfo;
 import com.bank.service.SeckillService;
 import com.framework.entity.SeckillOrderInfo;
 import com.framework.utils.Result;

@@ -5,13 +5,17 @@ import com.bank.entity.StuffInfo;
 import com.bank.listener.OrderExpireListener;
 import com.bank.mapper.BankCardMapper;
 import com.bank.mapper.OrderInfoMapper;
+import com.bank.mapper.SeckillMapper;
 import com.bank.mapper.StuffInfoMapper;
 import com.bank.service.OrderService;
+import com.bank.vo.OrderInfoResponseVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.framework.utils.Result;
+import com.google.common.collect.Lists;
+import org.apache.ibatis.cursor.Cursor;
 import org.assertj.core.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,6 +41,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private BankCardMapper bankCardMapper;
+
+    @Autowired
+    private SeckillMapper seckillMapper;
 
     @Autowired
     private OrderExpireListener orderExpireListener;
@@ -97,6 +106,37 @@ public class OrderServiceImpl implements OrderService {
         int update = stuffInfoMapper.updateStuffCount(stuffId, stuffAmount);
 
         return Result.ok("下单成功，请尽快支付");
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, readOnly = true)
+    public List<OrderInfoResponseVo> listOrders(String userName) throws Exception {
+        //大数据量非分页查询，使用流式查询/游标查询
+        //查询组装两种订单
+        ArrayList<OrderInfoResponseVo> res = Lists.newArrayList();
+        Cursor<OrderInfoResponseVo> cursor1 = null;
+        try {
+            cursor1 = orderInfoMapper.listOrders(userName);
+            cursor1.forEach(e -> res.add(e));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e);
+        } finally {
+            //资源关闭方式1: finally 手动关闭
+            if (Objects.nonNull(cursor1)) {
+                cursor1.close();
+            }
+        }
+
+        //资源关闭方式2: try with resource句式
+        try (Cursor<OrderInfoResponseVo> cursor2 = seckillMapper.listOrders(userName)) {
+            cursor2.forEach(e -> res.add(e));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e);
+        }
+
+        return res;
     }
 
 }
