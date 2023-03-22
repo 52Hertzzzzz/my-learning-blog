@@ -1,5 +1,6 @@
 package com.admin.controller;
 
+import com.admin.mapper.TagMapper;
 import com.admin.mapper.TransactionTestMapper;
 import com.admin.service.TransactionTestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class TransactionTestController {
 
     @Autowired
     private TransactionTestMapper testMapper;
+
+    @Autowired
+    private TagMapper tagMapper;
 
     @GetMapping("/test1")
     @Transactional(rollbackFor = Exception.class)
@@ -47,15 +51,15 @@ public class TransactionTestController {
 
     @GetMapping("/test7")
     public void transaction7() {
-        testService.transaction3();
         testService.transaction4();
+        testService.transaction5();
     }
 
     @GetMapping("/test8")
     @Transactional(rollbackFor = Exception.class)
     public void transaction8() {
-        testService.transaction3();
         testService.transaction4();
+        testService.transaction5();
     }
 
     @GetMapping("/test9")
@@ -105,7 +109,7 @@ public class TransactionTestController {
     }
 
     @GetMapping("/test14")
-    @Transactional(rollbackFor = Exception.class)
+    //@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
     public void transaction14() {
         testService.transaction6();
         testService.transaction7();
@@ -116,6 +120,43 @@ public class TransactionTestController {
     public void transaction15() {
         testService.transaction8();
         testService.transaction9();
+    }
+
+    @GetMapping("/test16")
+    @Transactional(rollbackFor = Exception.class)
+    public void transaction16() {
+        testService.transaction6();
+        testService.transaction7();
+    }
+
+    @GetMapping("/test17")
+    @Transactional(rollbackFor = Exception.class)
+    public void transaction17() {
+        //testService.transaction7();
+        tagMapper.selectList(null);
+        testMapper.test2();
+        testService.transaction10("1");
+        testService.transaction10("2");
+    }
+
+    @GetMapping("/test18")
+    //@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
+    public void transaction18() {
+        testMapper.test2();
+        testService.transaction10("1");
+        testService.transaction10("2");
+    }
+
+    @GetMapping("/test19")
+    @Transactional(rollbackFor = Exception.class)
+    public void transaction19() {
+        testMapper.test2();
+    }
+
+    @GetMapping("/test20")
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.NOT_SUPPORTED)
+    public void transaction20() {
+        testMapper.test2();
     }
 
 }

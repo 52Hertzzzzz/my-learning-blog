@@ -35,6 +35,13 @@ spring:
           password: '200058'
           driver-class-name: com.mysql.cj.jdbc.Driver
 
+#        事务传播属性测试库
+        slaveTest:
+          url: jdbc:mysql://127.0.0.1:3306/transaction_database?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+          username: root
+          password: '200058'
+          driver-class-name: com.mysql.cj.jdbc.Driver
+
       # 连接池配置：
       druid:
         initial-size: 2 # 初始化时建立物理连接的个数。默认0

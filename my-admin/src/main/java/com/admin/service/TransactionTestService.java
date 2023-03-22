@@ -1,8 +1,5 @@
 package com.admin.service;
 
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 public interface TransactionTestService {
 
     void transaction1();
@@ -23,4 +20,5 @@ public interface TransactionTestService {
 
     void transaction9();
 
+    void transaction10(String s);
 }

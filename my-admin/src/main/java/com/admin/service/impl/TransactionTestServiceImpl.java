@@ -51,7 +51,7 @@ public class TransactionTestServiceImpl implements TransactionTestService {
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
     public void transaction7() {
-        testMapper.test1();
+        testMapper.test2();
     }
 
     @Override
@@ -64,6 +64,16 @@ public class TransactionTestServiceImpl implements TransactionTestService {
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.NOT_SUPPORTED)
     public void transaction9() {
         testMapper.test2();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.NOT_SUPPORTED)
+    public void transaction10(String s) {
+        if ("1".equals(s)) {
+            testMapper.test1();
+        } else {
+            testMapper.test2();
+        }
     }
 
 }
