@@ -19,4 +19,6 @@ public interface OrderService {
 
     List<OrderInfoResponseVo> listOrders(String userName) throws Exception;
 
+    List<OrderInfoResponseVo> listOrders2(String userName) throws Exception;
+
 }

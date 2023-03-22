@@ -39,9 +39,24 @@ public class RedissonConfig {
         return config;
     }
 
+    private Config initConfigDev() {
+        //environment.getProperty();
+
+        log.info("===================Redisson初始化开始===================");
+        //Redisson配置文件
+        Config config = new Config();
+        //设置Codec序列化方式
+        config.setCodec(new StringCodec())
+                .useSingleServer()
+                .setAddress(RedissonPropertiesConstant.masterNode)
+                .setConnectionMinimumIdleSize(RedissonPropertiesConstant.minIdleSize)
+                .setConnectionPoolSize(RedissonPropertiesConstant.maxPoolSize);
+        return config;
+    }
+
     @Bean
     public RedissonClient redissonClient() {
-        Config config = this.initConfig();
+        Config config = this.initConfigDev();
         RedissonClient redissonClient = Redisson.create(config);
         return redissonClient;
     }

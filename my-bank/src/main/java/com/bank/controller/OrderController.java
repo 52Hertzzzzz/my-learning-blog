@@ -96,6 +96,18 @@ public class OrderController {
         return Result.ok(res);
     }
 
+    @GetMapping("/listOrders2")
+    public Result<?> listOrders2(@RequestParam(value = "userName") String userName) {
+        List<OrderInfoResponseVo> res = null;
+        try {
+            res = orderService.listOrders2(userName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error("查询异常");
+        }
+        return Result.ok(res);
+    }
+
     @GetMapping("/queryOrderDetail")
     public Result<?> queryOrderDetail() {
         return null;

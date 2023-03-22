@@ -16,6 +16,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.framework.utils.Result;
 import com.google.common.collect.Lists;
 import org.apache.ibatis.cursor.Cursor;
+import org.apache.ibatis.session.ResultContext;
+import org.apache.ibatis.session.ResultHandler;
 import org.assertj.core.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,6 +110,15 @@ public class OrderServiceImpl implements OrderService {
         return Result.ok("下单成功，请尽快支付");
     }
 
+    /***
+     * 以下两种流式查询rowData都是 {ResultsetRowsStreaming.class}
+     * 1.RowDataStatic 静态结果集，默认的查询方式，普通查询
+     * 2.RowDataDynamic 动态结果集，流式查询
+     * 3.RowDataCursor 游标结果集，服务器端基于游标查询
+     * @param userName
+     * @return
+     * @throws Exception
+     */
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
     public List<OrderInfoResponseVo> listOrders(String userName) throws Exception {
@@ -116,6 +127,12 @@ public class OrderServiceImpl implements OrderService {
         ArrayList<OrderInfoResponseVo> res = Lists.newArrayList();
         Cursor<OrderInfoResponseVo> cursor1 = null;
         try {
+
+            //流式查询1，所有条件都以注解形式放在Mapper接口上方
+            //不可以Mapper接口加注解，xml文件写SQL语句！！！
+            //@Options(resultSetType = ResultSetType.FORWARD_ONLY, fetchSize = Integer.MIN_VALUE)
+            //@ResultType(OrderInfoResponseVo.class)
+            //@Select(sql)
             cursor1 = orderInfoMapper.listOrders(userName);
             cursor1.forEach(e -> res.add(e));
         } catch (Exception e) {
@@ -129,8 +146,45 @@ public class OrderServiceImpl implements OrderService {
         }
 
         //资源关闭方式2: try with resource句式
+
+        //流式查询2，所有条件都加在xml标签中
+        //包括ResultType、resultSetType、fetchSize
+        //<select id="listOrders" resultType="com.bank.vo.OrderInfoResponseVo" resultSetType="FORWARD_ONLY" fetchSize="-2147483648">
         try (Cursor<OrderInfoResponseVo> cursor2 = seckillMapper.listOrders(userName)) {
             cursor2.forEach(e -> res.add(e));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e);
+        }
+
+        return res;
+    }
+
+    /***
+     * 以下两种流式查询rowData也都是 {ResultsetRowsStreaming.class}
+     * 和Curosr为返回值的方式基本一致，唯一不同为无返回值，使用自定义的ResultHandler对数据进行处理
+     * @param userName
+     * @return
+     * @throws Exception
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class, readOnly = true)
+    public List<OrderInfoResponseVo> listOrders2(String userName) throws Exception {
+        //大数据量非分页查询，使用流式查询/游标查询
+        //查询组装两种订单
+        ArrayList<OrderInfoResponseVo> res = Lists.newArrayList();
+        try {
+
+            //流式查询3，所有条件都以注解形式放在Mapper接口上方
+            orderInfoMapper.listOrders2(userName, obj -> res.add(obj.getResultObject()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e);
+        }
+
+        //流式查询4，所有条件都加在xml标签中
+        try {
+            seckillMapper.listOrders2(userName, obj -> res.add(obj.getResultObject()));
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception(e);
