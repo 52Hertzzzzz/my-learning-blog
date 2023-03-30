@@ -19,6 +19,7 @@
         <module>rabbitmq-consumer</module>
         <module>rabbitmq-producer</module>
         <module>my-bank</module>
+        <module>my-essearch</module>
     </modules>
 
     <!--    属性-->
