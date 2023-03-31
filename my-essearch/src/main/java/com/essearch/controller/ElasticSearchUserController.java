@@ -6,6 +6,7 @@ import com.framework.utils.Result;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.formula.functions.T;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -15,8 +16,11 @@ import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchAllQueryBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
+import org.elasticsearch.index.query.TermsQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -139,6 +143,64 @@ public class ElasticSearchUserController {
         }
     }
 
-    BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+    /***
+     * 过滤器查询
+     * filter效率比query要高，因为query需要计算文档得分再根据分数排序
+     * 而filter只判断是否满足条件，因此大部分场景term都可以用filter替换
+     * @param json
+     * @return
+     */
+    @PostMapping("/queryUserLocation")
+    public Result<?> queryUserLocation(@RequestBody JSONObject json) {
+        log.info("入参 -> {}", json);
+        String[] locations = json.getJSONArray("location").toArray(new String[]{});
 
+        SearchRequest request = new SearchRequest();
+        request.indices("user");
+
+        SearchSourceBuilder builder = new SearchSourceBuilder();
+        //filter条件构建
+        BoolQueryBuilder bool = new BoolQueryBuilder();
+        TermsQueryBuilder terms = new TermsQueryBuilder("location", locations);
+        bool.filter(terms);
+        builder.query(bool);
+        request.source(builder);
+
+        try {
+            SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+            SearchHits hits = response.getHits();
+            HashMap<String, Object> resMap = Maps.newHashMapWithExpectedSize(2);
+            LinkedList<EsUser> resList = Lists.newLinkedList();
+
+            for (SearchHit hit : hits) {
+                String str = hit.getSourceAsString();
+                log.info("hit: {}", str);
+                EsUser esUser = JSONObject.parseObject(str, EsUser.class);
+                resList.add(esUser);
+            }
+
+            resMap.put("total", hits.getTotalHits());
+            resMap.put("data", resList);
+            return Result.ok(resMap);
+        } catch (IOException e) {
+            log.error("按地区过滤查询user索引出现异常: {}", e);
+            return Result.error("按地区过滤查询user索引出现异常");
+        }
+    }
+
+    /***
+     * 桶聚合，统计用户名出现次数
+     * 指标聚合大部分为数值操作，如求最大、最小、平均值
+     * @param json
+     * @return
+     */
+    @PostMapping("/queryUserBucket")
+    public Result<?> queryUserBucket(@RequestBody JSONObject json) {
+        log.info("入参 -> {}", json);
+
+        //聚合构建
+        //AggregationBuilders.terms()
+
+        return null;
+    }
 }
