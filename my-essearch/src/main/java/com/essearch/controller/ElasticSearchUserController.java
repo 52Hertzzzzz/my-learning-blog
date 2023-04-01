@@ -6,12 +6,15 @@ import com.framework.utils.Result;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.lucene.index.Term;
 import org.apache.poi.ss.formula.functions.T;
+import org.assertj.core.util.Strings;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchAllQueryBuilder;
@@ -19,8 +22,9 @@ import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.index.query.TermsQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.aggregations.AggregationBuilder;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.*;
+import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
+import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,8 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 
 @RestController
 @RequestMapping("/user")
@@ -189,18 +192,62 @@ public class ElasticSearchUserController {
     }
 
     /***
-     * 桶聚合，统计用户名出现次数
+     * 桶聚合，统计用户地区
      * 指标聚合大部分为数值操作，如求最大、最小、平均值
      * @param json
      * @return
      */
-    @PostMapping("/queryUserBucket")
-    public Result<?> queryUserBucket(@RequestBody JSONObject json) {
+    @PostMapping("/queryUserLocationAggs")
+    public Result<?> queryUserLocationAggs(@RequestBody(required = false) JSONObject json) {
         log.info("入参 -> {}", json);
 
-        //聚合构建
-        //AggregationBuilders.terms()
+        SearchRequest request = new SearchRequest();
+        request.indices("user");
+        SearchSourceBuilder builder = new SearchSourceBuilder();
 
-        return null;
+        //如指定地区则返回指定地区
+        //未指定则返回所有地区
+        String location = json.getString("location");
+        if (!Strings.isNullOrEmpty(location)) {
+            log.info("查询指定地区");
+            BoolQueryBuilder bool = new BoolQueryBuilder();
+            TermQueryBuilder term = new TermQueryBuilder("location.keyword", location);
+            bool.filter(term);
+            builder.query(bool);
+        }
+
+        //bucket聚合构建，词频统计
+        TermsAggregationBuilder agg = AggregationBuilders.terms("location").field("location.keyword");
+        builder.aggregation(agg);
+        request.source(builder);
+
+        try {
+            SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+            Aggregation aggregation = response.getAggregations().get("location");
+            log.info("agg -> Name: {}", aggregation.getName());
+            log.info("agg -> Type: {}", aggregation.getType());
+
+            //Todo:聚合结果为null
+            log.info("agg -> MetaData: {}", aggregation.getMetaData());
+
+            SearchHits hits = response.getHits();
+            HashMap<String, Object> resMap = Maps.newHashMapWithExpectedSize(2);
+            LinkedList<EsUser> resList = Lists.newLinkedList();
+
+            for (SearchHit hit : hits) {
+                String str = hit.getSourceAsString();
+                log.info("hit: {}", str);
+                EsUser esUser = JSONObject.parseObject(str, EsUser.class);
+                resList.add(esUser);
+            }
+
+            resMap.put("aggs", aggregation.getMetaData());
+            resMap.put("total", hits.getTotalHits());
+            resMap.put("data", resList);
+            return Result.ok(resMap);
+        } catch (IOException e) {
+            log.error("桶聚合user索引出现异常: {}", e);
+            return Result.error("桶聚合user索引出现异常");
+        }
     }
 }
