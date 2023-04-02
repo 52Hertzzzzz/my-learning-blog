@@ -24,6 +24,7 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.*;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.*;
 
@@ -223,16 +225,17 @@ public class ElasticSearchUserController {
 
         try {
             SearchResponse response = client.search(request, RequestOptions.DEFAULT);
-            Aggregation aggregation = response.getAggregations().get("location");
+            //需要类型转换 Aggregation -> 具体实现类Terms，获取buckets
+            Terms aggregation = response.getAggregations().get("location");
+            //Aggregation aggregation = response.getAggregations().get("location");
             log.info("agg -> Name: {}", aggregation.getName());
             log.info("agg -> Type: {}", aggregation.getType());
-
-            //Todo:聚合结果为null
-            log.info("agg -> MetaData: {}", aggregation.getMetaData());
+            log.info("agg -> MetaData: {}", aggregation.getBuckets());
 
             SearchHits hits = response.getHits();
             HashMap<String, Object> resMap = Maps.newHashMapWithExpectedSize(2);
             LinkedList<EsUser> resList = Lists.newLinkedList();
+            LinkedList<Map<String, Object>> aggList = Lists.newLinkedList();
 
             for (SearchHit hit : hits) {
                 String str = hit.getSourceAsString();
@@ -241,9 +244,15 @@ public class ElasticSearchUserController {
                 resList.add(esUser);
             }
 
-            resMap.put("aggs", aggregation.getMetaData());
+            for (Terms.Bucket bucket : aggregation.getBuckets()) {
+                HashMap<String, Object> bucketMap = Maps.newHashMapWithExpectedSize(2);
+                bucketMap.put(bucket.getKeyAsString(), bucket.getDocCount());
+                aggList.add(bucketMap);
+            }
+
             resMap.put("total", hits.getTotalHits());
             resMap.put("data", resList);
+            resMap.put("aggs", aggList);
             return Result.ok(resMap);
         } catch (IOException e) {
             log.error("桶聚合user索引出现异常: {}", e);
