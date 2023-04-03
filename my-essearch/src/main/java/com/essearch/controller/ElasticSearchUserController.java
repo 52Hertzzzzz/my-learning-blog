@@ -226,28 +226,37 @@ public class ElasticSearchUserController {
         try {
             SearchResponse response = client.search(request, RequestOptions.DEFAULT);
             //需要类型转换 Aggregation -> 具体实现类Terms，获取buckets
-            Terms aggregation = response.getAggregations().get("location");
             //Aggregation aggregation = response.getAggregations().get("location");
+            Terms aggregation = response.getAggregations().get("location");
+
+            List<Aggregation> aggregations = response.getAggregations().asList();
             log.info("agg -> Name: {}", aggregation.getName());
             log.info("agg -> Type: {}", aggregation.getType());
             log.info("agg -> MetaData: {}", aggregation.getBuckets());
 
             SearchHits hits = response.getHits();
-            HashMap<String, Object> resMap = Maps.newHashMapWithExpectedSize(2);
+            HashMap<String, Object> resMap = Maps.newHashMapWithExpectedSize(3);
             LinkedList<EsUser> resList = Lists.newLinkedList();
-            LinkedList<Map<String, Object>> aggList = Lists.newLinkedList();
+            LinkedHashMap<String, Map<String, Object>> aggList = Maps.newLinkedHashMapWithExpectedSize(1);
+            String source = null;
+            Terms terms = null;
+            EsUser esUser = null;
+            HashMap<String, Object> bucketMap = null;
 
             for (SearchHit hit : hits) {
-                String str = hit.getSourceAsString();
-                log.info("hit: {}", str);
-                EsUser esUser = JSONObject.parseObject(str, EsUser.class);
+                source = hit.getSourceAsString();
+                log.info("hit: {}", source);
+                esUser = JSONObject.parseObject(source, EsUser.class);
                 resList.add(esUser);
             }
 
-            for (Terms.Bucket bucket : aggregation.getBuckets()) {
-                HashMap<String, Object> bucketMap = Maps.newHashMapWithExpectedSize(2);
-                bucketMap.put(bucket.getKeyAsString(), bucket.getDocCount());
-                aggList.add(bucketMap);
+            for (int i = 0; i < aggregations.size(); i++) {
+                terms = (Terms) aggregations.get(i);
+                bucketMap = Maps.newHashMapWithExpectedSize(1);
+                for (Terms.Bucket bucket : terms.getBuckets()) {
+                    bucketMap.put(bucket.getKeyAsString(), bucket.getDocCount());
+                }
+                aggList.put(terms.getName(), bucketMap);
             }
 
             resMap.put("total", hits.getTotalHits());
