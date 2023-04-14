@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.framework.entity.EMail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -86,6 +85,13 @@ public class OrderExpireListener {
                         eMail.setSubject("Your order has been canceled.");
                         eMail.setContent("<h1>Your order has been canceled.</h1><br/><h2>:(</h2>");
                         rabbitTemplate.convertAndSend("my.order", "order.email", eMail);
+
+                        //直接使用RabbitMQ延时队列插件，头部指定x-delay控制延时时间(毫秒)
+                        //可以使用setDelay设置，底层同样是给头部放置x-delay属性
+                        //rabbitTemplate.convertAndSend("delay.exchange", "delay.queue", eMail, p -> {
+                        //    p.getMessageProperties().setDelay(1000);
+                        //    return p;
+                        //});
                     } else {
                         log.info("订单: {} 已支付", task.getOrderInfo().getOrderId());
                     }

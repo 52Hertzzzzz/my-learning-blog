@@ -2,7 +2,6 @@ package com.consumer.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.framework.entity.SeckillOrderInfo;
-import org.apache.ibatis.annotations.Param;
 
 
 /**

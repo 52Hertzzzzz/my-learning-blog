@@ -11,7 +11,6 @@ import com.bank.service.BankRegisterService;
 import com.bank.vo.BankRegisterVo;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.framework.entity.EMail;
 import com.framework.enums.AppHttpCodeEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

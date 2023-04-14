@@ -7,7 +7,6 @@ import com.consumer.mapper.SeckillStuffInfoMapper;
 import com.framework.entity.SeckillOrderInfo;
 import com.framework.entity.SeckillStuffInfo;
 import com.framework.utils.RedisUtil;
-import com.google.common.collect.Lists;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -20,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
 @Service

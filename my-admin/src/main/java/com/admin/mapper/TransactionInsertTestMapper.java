@@ -5,8 +5,6 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public interface TransactionInsertTestMapper {
 
     @DS("master")

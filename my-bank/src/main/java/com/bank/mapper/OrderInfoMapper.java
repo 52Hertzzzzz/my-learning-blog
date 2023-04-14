@@ -11,8 +11,6 @@ import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.mapping.ResultSetType;
 import org.apache.ibatis.session.ResultHandler;
 
-import java.util.List;
-
 
 /**
  * (OrderInfo)表数据库访问层

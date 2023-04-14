@@ -1,6 +1,5 @@
 package com.bank.mapper;
 
-import com.bank.entity.OrderInfo;
 import com.bank.entity.StuffInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;

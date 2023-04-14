@@ -6,14 +6,11 @@ import com.blog.feign.clients.RabbitMQClient;
 import com.blog.feign.entity.CategoryVo;
 import com.blog.feign.entity.NacosConfigEntity;
 import com.framework.utils.Result;
-import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
