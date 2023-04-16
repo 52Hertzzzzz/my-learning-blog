@@ -10,8 +10,12 @@ import org.assertj.core.util.Strings;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.indices.CreateIndexRequest;
+import org.elasticsearch.client.indices.CreateIndexResponse;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchAllQueryBuilder;
@@ -42,6 +46,69 @@ public class ElasticSearchUserController {
     private RestHighLevelClient client;
 
     /***
+     * 创建索引
+     * @param json
+     * @return
+     */
+    @PostMapping("/createIndex")
+    public Result<?> insertUserDetail(@RequestBody JSONObject json) {
+        if (json.isEmpty()) {
+            return Result.error("请指定索引信息");
+        }
+        if (Strings.isNullOrEmpty(json.getString("shards"))) {
+            return Result.error("请自定义分片信息");
+        }
+        if (Strings.isNullOrEmpty(json.getString("replica"))) {
+            return Result.error("请自定义分片信息");
+        }
+        String indexName = json.getString("indexName");
+        if (Strings.isNullOrEmpty(indexName)) {
+            return Result.error("请设置索引名称");
+        }
+
+        //创建请求
+        CreateIndexRequest request = new CreateIndexRequest(indexName);
+
+        //配置分片信息
+        Settings setting = Settings.builder()
+                .put("index.number_of_shards", 1)
+                .put("index.number_of_replicas", 1)
+                //指定索引默认分词器
+                //.put("index.analysis.analyzer.default.type", "ik_max_word");
+                .build();
+        request.settings(setting);
+
+        //配置映射信息
+        String mappingString = json.fluentRemove("shards")
+                .fluentRemove("replica")
+                .fluentRemove("indexName")
+                .toString();
+        request.mapping(mappingString, XContentType.JSON);
+        //这种方法在组装映射属性时太复杂，不推荐
+        //LinkedHashMap<String, Object> map = Maps.newLinkedHashMap();
+        //json.entrySet().forEach(a -> {
+        //    String key = a.getKey();
+        //    String value = a.getValue().toString();
+        //    map.put(key, value);
+        //});
+
+        try {
+            CreateIndexResponse response = client.indices().create(request, RequestOptions.DEFAULT);
+            boolean acknowledged = response.isAcknowledged();
+            boolean shardsAcknowledged = response.isShardsAcknowledged();
+            //boolean fragment = response.isFragment();
+            if (acknowledged && shardsAcknowledged) {
+                return Result.ok("ok");
+            } else {
+                return Result.error("创建索引出现异常");
+            }
+        } catch (IOException e) {
+            log.error("创建索引 {} 出现异常: {}", indexName, e);
+            return Result.error("创建索引出现异常");
+        }
+    }
+
+    /***
      * 插入user
      * @param user
      * @return
@@ -51,6 +118,13 @@ public class ElasticSearchUserController {
         //指定索引库名称进行操作
         IndexRequest indexRequest = new IndexRequest("user");
         indexRequest.source(JSONObject.toJSONString(user), XContentType.JSON);
+
+        //更新文档
+        //UpdateRequest updateRequest = new UpdateRequest();
+        //updateRequest.id(id);
+        //updateRequest.doc();
+        //client.update(updateRequest, RequestOptions.DEFAULT);
+
         try {
             client.index(indexRequest, RequestOptions.DEFAULT);
         } catch (IOException e) {
