@@ -72,18 +72,6 @@ public class OrderController {
         }
     }
 
-    @PostMapping("/payOrder")
-    public Result<?> payOrder(@RequestBody OrderInfo orderInfo) {
-        try {
-            //Integer num = payService.addStuffs(stuffsList);
-
-            return Result.ok("订单支付成功");
-        } catch (Exception e) {
-            log.error("订单支付失败");
-            return Result.error("订单支付失败");
-        }
-    }
-
     @GetMapping("/listOrders")
     public Result<?> listOrders(@RequestParam(value = "userName") String userName) {
         List<OrderInfoResponseVo> res = null;
@@ -108,14 +96,27 @@ public class OrderController {
         return Result.ok(res);
     }
 
+
+    @PostMapping("/payOrder")
+    public Result<?> payOrder(@RequestBody OrderInfo orderInfo) {
+        try {
+            Integer i = orderService.payOrder(orderInfo);
+            if (i == 0) {
+                return Result.error("订单支付失败，请稍后再试");
+            } else if (i == 1) {
+                return Result.ok("您的账户余额不足");
+            } else {
+                return Result.ok("订单支付成功");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error("订单支付失败");
+        }
+    }
+
     @GetMapping("/queryOrderDetail")
     public Result<?> queryOrderDetail() {
         return null;
     }
-
-    //@PostMapping("/")
-    //public Result<?> queryOrderDetail() {
-    //
-    //}
 
 }

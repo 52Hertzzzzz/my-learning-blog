@@ -1,7 +1,9 @@
 package com.bank.service.impl;
 
+import com.bank.entity.BankCardInfo;
 import com.bank.entity.OrderInfo;
 import com.bank.entity.StuffInfo;
+import com.bank.event.eventEntity.OrderEvent;
 import com.bank.listener.OrderExpireListener;
 import com.bank.mapper.BankCardMapper;
 import com.bank.mapper.OrderInfoMapper;
@@ -10,6 +12,7 @@ import com.bank.mapper.StuffInfoMapper;
 import com.bank.service.OrderService;
 import com.bank.vo.OrderInfoResponseVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -17,20 +20,28 @@ import com.framework.utils.Result;
 import com.google.common.collect.Lists;
 import org.apache.ibatis.cursor.Cursor;
 import org.assertj.core.util.Strings;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
     Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
+
+    private final static String USER_PAY_LOCK = "USER_PAY_LOCK_KEY:";
 
     @Autowired
     private StuffInfoMapper stuffInfoMapper;
@@ -46,6 +57,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderExpireListener orderExpireListener;
+
+    @Autowired
+    private RedissonClient redissonClient;
+
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
     @Override
     public IPage<StuffInfo> listStuffs(Page<StuffInfo> page, String stuffName) {
@@ -188,6 +205,72 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return res;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public Integer payOrder(OrderInfo orderInfo) throws Exception {
+        RLock lock = null;
+
+        try {
+            String orderId = orderInfo.getOrderId();
+            LambdaQueryWrapper<OrderInfo> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(OrderInfo::getOrderId, orderId);
+            wrapper.eq(OrderInfo::getPaymentStatus, 0);
+            List<OrderInfo> orders = orderInfoMapper.selectList(wrapper);
+            if (orders.size() == 0) {
+                log.info("订单号: {} 不存在", orderId);
+                return 0;
+            } else {
+                OrderInfo order = orders.get(0);
+                String username = order.getUsername();
+                lock = redissonClient.getLock(USER_PAY_LOCK + username);
+                if (lock.tryLock(2, TimeUnit.SECONDS)) {
+                    log.info("用户: {} 获取支付锁成功", username);
+
+                    //支付逻辑
+                    Double moneyAmount = order.getMoneyAmount();
+                    Map<String, Object> map = orderInfoMapper.queryUserBalance(username);
+                    Double balance = Double.valueOf(map.get("balance").toString());
+                    if (balance.compareTo(moneyAmount) < 0) {
+                        log.info("余额不足");
+                        return 1;
+                    }
+
+                    String bankCardNum = map.get("bankCardNum").toString();
+                    LambdaUpdateWrapper<BankCardInfo> update = new LambdaUpdateWrapper<>();
+                    update.eq(BankCardInfo::getBankCardNum, bankCardNum);
+                    update.set(BankCardInfo::getBalance, balance - moneyAmount);
+                    int u = bankCardMapper.update(null, update);
+
+                    LambdaUpdateWrapper<OrderInfo> update1 = new LambdaUpdateWrapper<>();
+                    update1.eq(OrderInfo::getOrderId, orderId);
+                    update1.set(OrderInfo::getPaymentStatus, 1);
+                    int u1 = orderInfoMapper.update(null, update1);
+
+                    //支付成功
+                    if (u + u1 == 2) {
+                        //发布事件
+                        publisher.publishEvent(new OrderEvent(this, 0, orderInfo));
+                        return 2;
+                    } else {
+                        //操作不完整，回滚
+                        log.info("错误回滚");
+                        throw new RuntimeException("回滚");
+                    }
+                } else {
+                    log.info("用户: {} 获取支付锁失败", username);
+                    return 0;
+                }
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            //释放
+            if (lock.isLocked()) {
+                lock.unlock();
+            }
+        }
     }
 
 }

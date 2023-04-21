@@ -26,6 +26,8 @@ public class BankUserInfo {
 
     Integer age;
 
+    Double userPoints;
+
     @TableField(fill = FieldFill.INSERT)
     Long createBy;
 

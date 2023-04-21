@@ -20,7 +20,7 @@ public class AsyncConfig {
 
     private static final int MAXIMUM_POOL_SIZE = 5;
 
-    private static final long KEEP_ALIVE_TIME = 60;
+    private static final int KEEP_ALIVE_TIME = 60;
 
     private static final TimeUnit UNIT = TimeUnit.SECONDS;
 
@@ -40,13 +40,13 @@ public class AsyncConfig {
 
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         //配置核心线程数
-        executor.setCorePoolSize(2);
+        executor.setCorePoolSize(CORE_POOL_SIZE);
         //配置最大线程数
-        executor.setMaxPoolSize(5);
+        executor.setMaxPoolSize(MAXIMUM_POOL_SIZE);
         //配置队列大小
-        executor.setQueueCapacity(10240);
+        executor.setQueueCapacity(300);
         //配置空闲线程保留时间
-        executor.setKeepAliveSeconds(60);
+        executor.setKeepAliveSeconds(KEEP_ALIVE_TIME);
         //配置线程池中的线程的名称前缀
         executor.setThreadNamePrefix("AsyncCommonThread-");
         //设置饱和策略：当pool已经达到max size的时候，如何处理新任务

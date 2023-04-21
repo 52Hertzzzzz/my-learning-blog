@@ -23,7 +23,7 @@ public class OrderExpireListener {
 
     private static final int THREAD_NUM = 3;
 
-    private static final int DELAY_SECONDS = 3;
+    private static final int DELAY_SECONDS = 60 * 15;
 
     private Thread[] threads = new Thread[THREAD_NUM];
 

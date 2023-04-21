@@ -10,17 +10,18 @@ import org.assertj.core.util.Strings;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.client.indices.CreateIndexResponse;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchAllQueryBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.index.query.TermsQueryBuilder;
+import org.elasticsearch.search.Scroll;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.Aggregation;
@@ -36,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/user")
@@ -143,10 +145,12 @@ public class ElasticSearchUserController {
     public Result<?> queryAllUser() {
         //指定索引库名称进行操作
         SearchRequest searchRequest = new SearchRequest("user");
+        searchRequest.scroll(new Scroll(new TimeValue(10, TimeUnit.MINUTES)));
 
         //组装查询条件并赋值
         SearchSourceBuilder search = new SearchSourceBuilder();
         //match_all
+        //MatchAllQueryBuilder builder1 = QueryBuilders.matchAllQuery();
         MatchAllQueryBuilder builder = new MatchAllQueryBuilder();
         search.query(builder);
         searchRequest.source(search);
@@ -188,8 +192,11 @@ public class ElasticSearchUserController {
         //组装查询条件并赋值
         SearchSourceBuilder search = new SearchSourceBuilder();
         //term
-        TermQueryBuilder term = new TermQueryBuilder("username", json.getString("userName"));
-        search.query(term);
+        String userName = json.getString("userName");
+        if (!Strings.isNullOrEmpty(userName)) {
+            TermQueryBuilder term = new TermQueryBuilder("username", userName);
+            search.query(term);
+        }
         //分页参数
         Integer pageSize = json.getInteger("pageSize");
         Integer pageNo = (json.getInteger("pageNo") - 1) * pageSize;
@@ -209,7 +216,7 @@ public class ElasticSearchUserController {
                 resList.add(esUser);
             }
 
-            resMap.put("total", hits.getTotalHits());
+            resMap.put("total", hits.getTotalHits().value);
             resMap.put("data", resList);
             return Result.ok(resMap);
         } catch (IOException e) {
@@ -338,4 +345,7 @@ public class ElasticSearchUserController {
             return Result.error("桶聚合user索引出现异常");
         }
     }
+
+
+
 }

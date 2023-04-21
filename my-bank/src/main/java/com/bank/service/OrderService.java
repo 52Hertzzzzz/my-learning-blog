@@ -21,4 +21,6 @@ public interface OrderService {
 
     List<OrderInfoResponseVo> listOrders2(String userName) throws Exception;
 
+    Integer payOrder(OrderInfo orderInfo) throws Exception;
+
 }
