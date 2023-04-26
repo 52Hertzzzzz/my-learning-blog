@@ -1,0 +1,146 @@
+server:
+  port: 6666
+  servlet:
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true
+
+spring:
+  application:
+    name: bankservice
+
+#  cloud:
+#    nacos:
+#      discovery:
+#        cluster-name: Xian
+#        namespace: b288257e-bee0-464d-af61-bb397ce42e10
+#        ephemeral: false
+
+  datasource:
+  #多数据源配置
+    dynamic:
+      primary: master #默认数据源
+      strict: false #严格匹配数据源,默认false. true未匹配到指定数据源时抛异常,false使用默认数据源
+      datasource:
+        master:
+          url: jdbc:mysql://192.168.190.129:3306/sg_blog?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+          username: root
+          password: '200058'
+          driver-class-name: com.mysql.cj.jdbc.Driver
+
+        slave:
+          url: jdbc:mysql://127.0.0.1:3306/sg_blog?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+          username: root
+          password: '200058'
+          driver-class-name: com.mysql.cj.jdbc.Driver
+
+      # 连接池配置：
+      druid:
+        initial-size: 2 # 初始化时建立物理连接的个数。默认0
+        max-active: 10 # 最大连接池数量，默认8
+        min-idle: 2 # 最小连接池数量
+        max-wait: 2000 # 获取连接时最大等待时间，单位毫秒。
+        pool-prepared-statements: false # 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
+        max-pool-prepared-statement-per-connection-size: -1 # 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。在Druid中，不会存在Oracle下PSCache占用内存过多的问题，可以把这个数值配置大一些，比如说100
+        #申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+        test-while-idle: true
+        #既作为检测的间隔时间又作为testWhileIdel执行的依据
+        time-between-eviction-runs-millis: 60000
+        #销毁线程时检测当前连接的最后活动时间和当前时间差大于该值时，关闭当前连接
+        min-evictable-idle-time-millis: 300000
+        #用来检测连接是否有效的sql 必须是一个查询语句
+        validation-query: "SELECT 1"
+        #申请连接时会执行validationQuery检测连接是否有效,开启会降低性能,默认为true
+        test-on-borrow: false
+        #归还连接时会执行validationQuery检测连接是否有效,开启会降低性能,默认为true
+        test-on-return: false
+        #配置扩展插件
+        connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=1000
+        #超过时间限制是否回收
+        removeAbandoned: true
+        #超时时间；单位为秒。180秒=3分钟
+        removeAbandonedTimeout: 180
+
+  #文件上传设置
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 5MB
+  #SpringSecurity默认账号密码
+  security:
+    user:
+      name: root
+      password: root
+  #redis配置
+  redis:
+    #数据库索引
+    database: 0
+    cluster:
+      nodes: redis://192.168.190.129:6379, redis://127.0.0.1:6379
+      max-redirects: 1
+    #    host: 192.168.190.129
+#    port: 6379
+    password: ""
+    timeout: 0
+    #redis连接池配置
+
+  #开启事务
+  transaction:
+    rollback-on-commit-failure: true
+
+  rabbitmq:
+    host: 192.168.190.129
+    port: 5672
+    username: 52hz
+    password: 200058
+    virtual-host: /
+    publisher-confirm-type: correlated  #生产者 -> 交换机消息回调
+    publisher-returns: true  #交换机 -> 队列消息回调
+    template:
+      mandatory: true  #发送失败强制回退生产者
+
+mybatis-plus:
+  configuration:
+    #打印日志信息
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #关闭驼峰映射
+#    map-underscore-to-camel-case: false
+  global-config:
+    db-config:
+      #逻辑删除字段名
+      logic-delete-field: delFlag
+      #1代表已删除
+      logic-delete-value: 1
+      #0代表未删除
+      logic-not-delete-value: 0
+      #主键自增策略
+      id-type: auto
+  mapper-locations: classpath*:com/bank/mapper/xml/*.xml
+
+oss:
+  accessKey: em2X2-Ra1aWID3I2jHtFbp21OBy0UV7M2WkYVlHG
+  secretKey: 7o4xxRuGocTFJk14fC_DmTGdV2gBWCb2cF-_iYgk
+  bucket: my-learning
+
+adminservice:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.alibaba.cloud.nacos.ribbon.NacosRule
+
+# 负载均衡
+ribbon:
+  eager-load:
+    enabled: true # 开启饥饿加载
+    clients: adminservice
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: basic
+  httpclient:
+    enabled: true # 支持HttpClient的开关
+    max-connections: 200 # 最大连接数
+    max-connections-per-route: 50 # 单个路径的最大连接数
+
+

@@ -3,7 +3,7 @@ package com.framework.filter;
 import com.alibaba.fastjson.JSON;
 import com.framework.entity.LoginUser;
 import com.framework.utils.JwtUtil;
-import com.framework.utils.RedisCache;
+import com.framework.utils.RedisUtil;
 import com.framework.utils.Result;
 import com.framework.utils.WebUtils;
 import io.jsonwebtoken.Claims;
@@ -25,7 +25,7 @@ import java.util.Objects;
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Autowired
-    private RedisCache redisCache;
+    private RedisUtil redisUtil;
 
     //认证过滤器实现
     @Override
@@ -53,7 +53,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
         String userId = claims.getSubject();
         //从redis中获取对应用户信息
-        LoginUser cacheObject = redisCache.getCacheObject("bloglogin:" + userId);
+        LoginUser cacheObject = (LoginUser) redisUtil.get("bloglogin:" + userId);
 
         if (Objects.isNull(cacheObject)){
             //未找到用户信息，说明登录过期

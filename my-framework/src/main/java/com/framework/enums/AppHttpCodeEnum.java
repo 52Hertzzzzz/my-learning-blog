@@ -19,7 +19,9 @@ public enum AppHttpCodeEnum {
     PASSWORD_NOT_NULL(510, "密码不能为空"),
     EMAIL_NOT_NULL(511, "邮箱不能为空"),
     NICKNAME_EXIST(512, "昵称已存在"),
-    DATA_EMPTY(513, "请输入内容");
+    DATA_EMPTY(513, "请输入内容"),
+    BANK_REGISTER_FAILED(514, "银行卡办理成功！"),
+    BANK_REGISTER_SUCCESS(515, "银行卡办理失败，请稍后再试！");
 
     int code;
     String msg;

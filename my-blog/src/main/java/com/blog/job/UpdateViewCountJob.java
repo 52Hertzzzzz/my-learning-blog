@@ -2,7 +2,7 @@ package com.blog.job;
 
 import com.blog.entity.Article;
 import com.blog.service.ArticleService;
-import com.framework.utils.RedisCache;
+import com.framework.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class UpdateViewCountJob {
 
     @Autowired
-    private RedisCache redisCache;
+    private RedisUtil redisUtil;
 
     @Autowired
     private ArticleService articleService;
@@ -27,7 +27,7 @@ public class UpdateViewCountJob {
     public void updateViewCount(){
 
         //获取redis中的浏览量
-        Map<String, Integer> viewCountMap = redisCache.getCacheMap("viewCount");
+        Map<String, Integer> viewCountMap = (Map<String, Integer>) ((Object) redisUtil.hmget("viewCount"));
         List<Article> articles = viewCountMap.entrySet().stream()
                 .map(entry -> new Article(Long.valueOf(entry.getKey()),
                         entry.getValue().longValue()))

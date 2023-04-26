@@ -20,4 +20,10 @@ public class MybatisPlusConfig {
         return mybatisPlusInterceptor;
     }
 
+    //@Bean
+    //@Primary
+    //public MetaObjectHandler metaObjectHandler() {
+    //    return new MyMetaObjectHandler();
+    //}
+
 }

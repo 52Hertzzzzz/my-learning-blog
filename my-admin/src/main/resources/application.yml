@@ -35,6 +35,13 @@ spring:
           password: '200058'
           driver-class-name: com.mysql.cj.jdbc.Driver
 
+#        事务传播属性测试库
+        slaveTest:
+          url: jdbc:mysql://127.0.0.1:3306/transaction_database?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+          username: root
+          password: '200058'
+          driver-class-name: com.mysql.cj.jdbc.Driver
+
       # 连接池配置：
       druid:
         initial-size: 2 # 初始化时建立物理连接的个数。默认0
@@ -58,8 +65,11 @@ spring:
   redis:
     #数据库索引
     database: 0
-    host: 192.168.190.129
-    port: 6379
+    cluster:
+      nodes: redis://192.168.190.129:6379, redis://127.0.0.1:6379
+      max-redirects: 1
+    #    host: 192.168.190.129
+    #    port: 6379
     password: ""
     timeout: 0
     #redis连接池配置
@@ -78,7 +88,7 @@ mybatis-plus:
       logic-not-delete-value: 0
       #主键自增策略
       id-type: auto
-  mapper-locations: classpath*:com/blog/com.blog.mapper/xml/*.xml
+  mapper-locations: classpath*:com/admin/com.blog.mapper/xml/*.xml
 
 blogservice:
   ribbon:
