@@ -9,7 +9,7 @@ public class BaseEvent<T> extends ApplicationEvent {
     //事件类型，可扩展
     private Integer type;
 
-    protected T obj;
+    private T obj;
 
     public BaseEvent(Object source, Integer type, T obj) {
         super(source);

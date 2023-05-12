@@ -19,11 +19,15 @@ public class OrderEventListener {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    private final BigDecimal multiply = new BigDecimal(0.1);
+    private final BigDecimal multiply = BigDecimal.valueOf(0.1);
 
     @Autowired
     private BankUserMapper bankUserMapper;
 
+    /***
+     * 异步事件
+     * @param event
+     */
     @EventListener(value = {OrderEvent.class}, condition = "#event.type == 0")
     @Async("common")
     public void invoke(OrderEvent event) {
