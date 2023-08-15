@@ -22,7 +22,9 @@ public class RetryingConfig {
                 .retryIfResult(bool -> !bool)
                 .withWaitStrategy(WaitStrategies.fixedWait(3, TimeUnit.SECONDS))
                 .withStopStrategy(StopStrategies.stopAfterAttempt(3))
-                .withAttemptTimeLimiter(AttemptTimeLimiters.fixedTimeLimit(3, TimeUnit.SECONDS))
+                //Todo: fixTimeLimit不让用，奇了怪了
+//                .withAttemptTimeLimiter(AttemptTimeLimiters.fixedTimeLimit(3, TimeUnit.SECONDS))
+                .withAttemptTimeLimiter(AttemptTimeLimiters.noTimeLimit())
                 .build();
 
         return retryer;

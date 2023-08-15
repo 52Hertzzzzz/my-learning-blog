@@ -1,6 +1,7 @@
 package com.framework.config;
 
 import com.framework.constants.RedissonPropertiesConstant;
+import com.framework.constants.RedissonPropertiesConstantDev;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -8,17 +9,31 @@ import org.redisson.client.codec.StringCodec;
 import org.redisson.config.Config;
 import org.redisson.config.ReadMode;
 import org.redisson.spring.data.connection.RedissonConnectionFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 @Slf4j
-public class RedissonConfig {
+public class RedissonConfig implements ApplicationContextAware {
 
-    //@Autowired
-    //private Environment environment;
+    private static final String DEV = "dev";
+
+    private ApplicationContext context;
+
+    @Autowired
+    private Environment environment;
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.context = applicationContext;
+    }
 
     private Config initConfig() {
         //environment.getProperty();
@@ -40,17 +55,26 @@ public class RedissonConfig {
     }
 
     private Config initConfigDev() {
-        //environment.getProperty();
-
         log.info("===================Redisson初始化开始===================");
         //Redisson配置文件
         Config config = new Config();
-        //设置Codec序列化方式
-        config.setCodec(new StringCodec())
-                .useSingleServer()
-                .setAddress(RedissonPropertiesConstant.masterNode)
-                .setConnectionMinimumIdleSize(RedissonPropertiesConstant.minIdleSize)
-                .setConnectionPoolSize(RedissonPropertiesConstant.maxPoolSize);
+
+        if (DEV.equals(environment.getActiveProfiles()[0])) {
+            //设置Codec序列化方式
+            config.setCodec(new StringCodec())
+                  .useSingleServer()
+                  .setAddress(RedissonPropertiesConstantDev.masterNode)
+                  .setConnectionMinimumIdleSize(RedissonPropertiesConstantDev.minIdleSize)
+                  .setConnectionPoolSize(RedissonPropertiesConstantDev.maxPoolSize);
+        } else {
+            //设置Codec序列化方式
+            config.setCodec(new StringCodec())
+                  .useSingleServer()
+                  .setAddress(RedissonPropertiesConstant.masterNode)
+                  .setConnectionMinimumIdleSize(RedissonPropertiesConstant.minIdleSize)
+                  .setConnectionPoolSize(RedissonPropertiesConstant.maxPoolSize);
+        }
+
         return config;
     }
 
