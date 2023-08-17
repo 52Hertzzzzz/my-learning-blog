@@ -154,6 +154,12 @@
             <artifactId>guava-retrying</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.0-jre</version>
+        </dependency>
+
     </dependencies>
 
     <build>

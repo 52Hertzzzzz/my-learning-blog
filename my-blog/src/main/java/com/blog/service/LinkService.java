@@ -3,6 +3,7 @@ package com.blog.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.blog.entity.Link;
 import com.blog.vo.LinkVo;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -16,4 +17,9 @@ import java.util.List;
 public interface LinkService extends IService<Link> {
 
     List<LinkVo> getAllLink();
+
+    Mono<Link> insert();
+
+    void insert1();
+
 }
