@@ -7,6 +7,7 @@ import com.blog.mapper.LinkMapper;
 import com.blog.service.LinkService;
 import com.blog.vo.LinkVo;
 import com.framework.constants.SystemConstants;
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
@@ -14,11 +15,16 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -30,6 +36,9 @@ import java.util.function.Function;
 @Slf4j
 @Service("linkService")
 public class LinkServiceImpl extends ServiceImpl<LinkMapper, Link> implements LinkService {
+
+    private static final ThreadPoolExecutor executor = new ThreadPoolExecutor(8, 12, 60L, TimeUnit.SECONDS,
+                                                                              new ArrayBlockingQueue<>(10240));
 
     @Override
     public List<LinkVo> getAllLink() {
@@ -95,18 +104,14 @@ public class LinkServiceImpl extends ServiceImpl<LinkMapper, Link> implements Li
                                                            .description(String.valueOf(k).concat("号链接"))
                                                            .build();
 
-                                          list.add(build);
-                                          k++;
-                                      }
+                list.add(build);
+                k++;
+            }
 
-                                      return list;
-                                  })
-                                  .doOnNext(v -> {
-                                      this.saveBatch(v, 1000);
-                                  })
-                                  .doOnNext(v -> log.info("Insert Success"))
-                                  .subscribeOn(Schedulers.parallel())
-                                  .map(v -> new Link());
+            return list;
+        }).doOnNext(v -> {
+            this.saveBatch(v, 1000);
+        }).doOnNext(v -> log.info("Insert Success")).subscribeOn(Schedulers.parallel()).map(v -> new Link());
 
         log.info("构建Mono End");
         return linkMono;
@@ -138,17 +143,68 @@ public class LinkServiceImpl extends ServiceImpl<LinkMapper, Link> implements Li
                 }
 
                 return res;
-            })
-            .doOnNext(v -> {
+            }).doOnNext(v -> {
                 List<Link> v1 = v;
                 log.info("当前数组长度为: {}", v1.size());
-            })
-            .doOnNext(v -> {
+            }).doOnNext(v -> {
                 log.info("开始当前批次批量插入");
                 this.saveBatch(v);
+            }).subscribeOn(Schedulers.immediate()).subscribe();
+    }
+
+    @Override
+    public Long mvcTest(String type, Long times) {
+        List<Link> build = build(times);
+        final long[] l = {0};
+        Stopwatch stopwatch = Stopwatch.createStarted();
+        build.stream().forEach(v -> executor.execute(() -> {
+                this.save(v);
+                l[0]++;
+            }
+        ));
+
+        while (true) {
+            if (times == l[0]) {
+                log.info("Cost: {}", stopwatch.stop().elapsed(TimeUnit.MILLISECONDS));
+                break;
+            }
+        }
+
+        return 1L;
+//        return stopwatch.stop().elapsed(TimeUnit.MILLISECONDS);
+    }
+
+    @Override
+    public Long reactorTest(String type, Long times) {
+        List<Link> build = build(times);
+        Stopwatch stopwatch = Stopwatch.createStarted();
+        Flux.fromIterable(build)
+            .doOnNext(v -> this.save(v))
+            .doFinally(new Consumer<SignalType>() {
+                @Override
+                public void accept(SignalType signalType) {
+                    log.info("Cost: {}", stopwatch.stop().elapsed(TimeUnit.MILLISECONDS));
+                }
             })
-            .subscribeOn(Schedulers.immediate())
+            .subscribeOn(Schedulers.parallel())
             .subscribe();
+
+        return 1L;
+//        return stopwatch.stop().elapsed(TimeUnit.MILLISECONDS);
+    }
+
+    private List<Link> build(Long times) {
+        List<Link> list = Lists.newArrayList();
+        while (times > 0) {
+            Link build = Link.builder()
+                             .name(String.valueOf(times).concat("号链接"))
+                             .description(String.valueOf(times).concat("号链接"))
+                             .build();
+            list.add(build);
+            times--;
+        }
+
+        return list;
     }
 
 }

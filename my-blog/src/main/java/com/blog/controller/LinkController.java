@@ -49,4 +49,16 @@ public class LinkController {
         return Result.ok("ok");
     }
 
+    @GetMapping("/test")
+    public Result<?> test(String type, Long times) {
+        Long elapse = null;
+        if ("MVC".equals(type)) {
+            elapse = linkService.mvcTest(type, times);
+        } else if ("REACTOR".equals(type)) {
+            elapse = linkService.reactorTest(type, times);
+        }
+
+        return Result.ok("Cost: " + elapse);
+    }
+
 }

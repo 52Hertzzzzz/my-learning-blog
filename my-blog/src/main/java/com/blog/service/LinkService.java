@@ -22,4 +22,8 @@ public interface LinkService extends IService<Link> {
 
     void insert1();
 
+    Long mvcTest(String type, Long times);
+
+    Long reactorTest(String type, Long times);
+
 }
