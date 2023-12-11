@@ -11,7 +11,10 @@ import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
+import org.redisson.api.RBloomFilter;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -39,6 +42,9 @@ public class LinkServiceImpl extends ServiceImpl<LinkMapper, Link> implements Li
 
     private static final ThreadPoolExecutor executor = new ThreadPoolExecutor(8, 12, 60L, TimeUnit.SECONDS,
                                                                               new ArrayBlockingQueue<>(10240));
+
+    @Autowired
+    private RedissonClient redissonClient;
 
     @Override
     public List<LinkVo> getAllLink() {
@@ -191,6 +197,52 @@ public class LinkServiceImpl extends ServiceImpl<LinkMapper, Link> implements Li
 
         return 1L;
 //        return stopwatch.stop().elapsed(TimeUnit.MILLISECONDS);
+    }
+
+    @Override
+    public void test1() {
+        RBloomFilter<String> bloomFilter = redissonClient.getBloomFilter("abc");
+        boolean exists = bloomFilter.isExists();
+        log.info("Bloom Filter exists: {}", exists);
+
+        bloomFilter.tryInit(1000000, 0.03);
+        boolean exists1 = bloomFilter.isExists();
+        log.info("Bloom Filter exists: {}", exists1);
+        bloomFilter.add("aaaaa");
+
+        bloomFilter.tryInit(1000000, 0.03);
+        boolean exists2 = bloomFilter.isExists();
+        log.info("Bloom Filter exists: {}", exists2);
+
+    }
+
+    @Override
+    public void test2() {
+        RBloomFilter<String> bloomFilter = redissonClient.getBloomFilter("test1");
+        bloomFilter.tryInit(1000000, 0.03);
+
+        Stopwatch stopwatch = Stopwatch.createStarted();
+        bloomFilter.contains("a");
+        bloomFilter.add("a");
+        bloomFilter.contains("b");
+        bloomFilter.add("c");
+        bloomFilter.contains("d");
+        bloomFilter.add("e");
+        bloomFilter.contains("f");
+        bloomFilter.add("g");
+        bloomFilter.contains("h");
+        bloomFilter.add("i");
+        bloomFilter.contains("j");
+        bloomFilter.add("k");
+        bloomFilter.contains("l");
+        long elapsed = stopwatch.elapsed(TimeUnit.MILLISECONDS);
+        log.info("Cost: {}", elapsed);
+    }
+
+    @Override
+    public void test3() {
+
+        //executor;
     }
 
     private List<Link> build(Long times) {

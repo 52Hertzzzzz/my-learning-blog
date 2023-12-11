@@ -30,6 +30,7 @@
         <spring.cloud-version>Hoxton.SR8</spring.cloud-version>
         <spring.cloud.alibaba-version>2.2.3.RELEASE</spring.cloud.alibaba-version>
         <spring.boot-version>2.3.2.RELEASE</spring.boot-version>
+        <flink.version>1.14.0</flink.version>
     </properties>
 
     <!--    父模块对子模块的依赖版本控制，指定子模块依赖的版本号-->
@@ -175,6 +176,34 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>31.0-jre</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-streaming-java_2.11</artifactId>
+                <version>${flink.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-streaming-scala_2.11</artifactId>
+                <version>${flink.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-java</artifactId>
+                <version>${flink.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-scala_2.11</artifactId>
+                <version>${flink.version}</version>
+                <scope>provided</scope>
             </dependency>
 
         </dependencies>

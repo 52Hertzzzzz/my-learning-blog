@@ -61,4 +61,22 @@ public class LinkController {
         return Result.ok("Cost: " + elapse);
     }
 
+    @GetMapping("/test1")
+    public Result<?> test1() {
+        linkService.test1();
+        return Result.ok();
+    }
+
+    @GetMapping("/test2")
+    public Result<?> test2() {
+        linkService.test2();
+        return Result.ok();
+    }
+
+    @GetMapping("/test3")
+    public Result<?> test3() {
+        linkService.test3();
+        return Result.ok();
+    }
+
 }

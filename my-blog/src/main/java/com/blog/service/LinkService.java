@@ -26,4 +26,10 @@ public interface LinkService extends IService<Link> {
 
     Long reactorTest(String type, Long times);
 
+    void test1();
+
+    void test2();
+
+    void test3();
+
 }
